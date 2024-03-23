@@ -3,6 +3,8 @@ package com.example.demo.obj;
 
 import lombok.Data;
 
+import java.math.BigInteger;
+
 @Data
 public class SaveGameInfoObj {
 
@@ -12,7 +14,9 @@ public class SaveGameInfoObj {
 
     private int userIdPk;
 
-    private int totalCorrect;
+    private Long totalCorrect;
 
-    private int totalIncorrect;
+    private Long totalIncorrect;
+
+    private Long totalQuizItems;
 }

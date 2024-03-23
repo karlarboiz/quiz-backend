@@ -157,8 +157,6 @@ public class MainController {
 
         return ResponseEntity.ok(gameCheckObj);
     }
-
-
     @GetMapping("/fetch/game-result")
     public ResponseEntity<List<ItemDataQuizObj>> fetchGameResult(){
         SaveGameInfoInOutDto saveGameInfoInOutDto  = saveGameInfoService.findLatestSaveGameInfo();

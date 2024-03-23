@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -98,11 +99,11 @@ public class SaveGameInfoServiceImpl implements SaveGameInfoService {
             saveGameInfoObj.setIdPk((Integer) item[0]);
             saveGameInfoObj.setQuizUUID((String) item[1]);
             saveGameInfoObj.setUserIdPk((Integer) item[2]);
-            saveGameInfoObj.setTotalCorrect((Integer) item[3]);
-            saveGameInfoObj.setIdPk((Integer) item[4]);
-
+            saveGameInfoObj.setTotalCorrect((Long) item[3]);
+            saveGameInfoObj.setTotalIncorrect((Long) item[4]);
+            saveGameInfoObj.setTotalQuizItems((Long) item[5]);
             saveGameInfoObjs.add(saveGameInfoObj);
-        }
+            }
 
         saveGameInfoInOutDto.setSavedGameDetails(saveGameInfoObjs);
 

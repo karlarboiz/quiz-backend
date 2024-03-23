@@ -19,23 +19,26 @@ public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
                     " and e.deleteFlg = false ";
 
     final String GET_ALL_COMPLETED_ACTIVE_SAVE_GAME_INFO_OF_A_USER =
-            " select e.idPk,e.quizUUID,e.userIdPk," +
+            "select " +
+                    " e.idPk, e.quizUUID, " +
+                    " e.userIdPk, " +
                     " case " +
                     " when e.completed then ( " +
-                    "     select count(f.recordQuizIdPk) from RecordScore f " +
-                    "     where f.isCorrect = true " +
-                    "     and f.recordQuizIdPk = e.idPk " +
-                    "    ) " +
+                    "    select count(f.recordQuizIdPk) from RecordScore f " +
+                    "    where f.isCorrect = true " +
+                    " and f.recordQuizIdPk = e.idPk )" +
                     "    else 0 " +
-                    "    end as totalCorrect, " +
+                    "    end as totalCorrect " +
+                    "    ," +
                     " case " +
                     " when e.completed then ( " +
-                    "     select count(f.recordQuizIdPk) from RecordScore f " +
-                    "     where f.isCorrect = false " +
-                    "     and f.recordQuizIdPk = e.idPk" +
-                    "    ) " +
+                    "    select count(f.recordQuizIdPk) from RecordScore f" +
+                    "    where f.isCorrect = false " +
+                    " and f.recordQuizIdPk = e.idPk)" +
                     "    else 0 " +
-                    "    end as totalIncorrect " +
+                    "    end as totalIncorrect, " +
+                    " (select count(t.id) from ItemDataQuiz t " +
+                    " where t.quizUserIdPk = e.idPk ) as totalQuizItems" +
                     " from SaveGameInfo e " +
                     " where e.userIdPk = :userIdPk " +
                     " and e.deleteFlg = false ";

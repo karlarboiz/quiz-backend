@@ -19,4 +19,6 @@ public class SaveGameInfoInOutDto {
     private int userIdPk;
 
     private List<SaveGameInfoObj> savedGameDetails;
+
+    private String date;
 }

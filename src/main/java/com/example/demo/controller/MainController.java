@@ -186,7 +186,6 @@ public class MainController {
         return ResponseEntity.ok(responseProfile);
     }
 
-
     @GetMapping("/game-history")
     public ResponseEntity<List<SaveGameInfoObj>> getHistory() {
         int userIdPk = loggedInUserService.getLoggedInUserDetails().getUserInformationObj().getId();
@@ -198,5 +197,11 @@ public class MainController {
         SaveGameInfoInOutDto saveGameInfoInOutDto =saveGameInfoService.getAllDetailsOfSavedGames(inDto);
         List<SaveGameInfoObj> saveGameInfoObjs =  saveGameInfoInOutDto.getSavedGameDetails();
         return ResponseEntity.ok(saveGameInfoObjs);
+    }
+
+    @GetMapping("/game-history/{quizUUID}")
+    public ResponseEntity<String> getSpecificQuizHistoryDetails(){
+                
+        return ResponseEntity.ok("hello");
     }
 }

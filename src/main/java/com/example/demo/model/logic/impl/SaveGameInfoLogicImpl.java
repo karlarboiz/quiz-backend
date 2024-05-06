@@ -34,4 +34,9 @@ public class SaveGameInfoLogicImpl implements SaveGameInfoLogic {
     public List<Object[]> getAllCompletedActiveSaveGameInfoOfAUser(int userIdPk) {
         return saveGameInfoDao.getAllCompletedActiveSaveGameInfoOfAUser(userIdPk);
     }
+
+    @Override
+    public List<SaveGameInfo> getAllNotCompletedQuizzes(String date,int userIdPk) {
+        return saveGameInfoDao.getAllNotCompletedQuizzes(date,userIdPk);
+    }
 }

@@ -11,4 +11,6 @@ public interface SaveGameInfoService {
     public void updateSaveGameInfo(SaveGameInfoInOutDto inOutDto);
 
     public SaveGameInfoInOutDto getAllDetailsOfSavedGames(SaveGameInfoInOutDto inDto);
+
+    public SaveGameInfoInOutDto getAllNotCompletedQuizzes(SaveGameInfoInOutDto inOutDto);
 }

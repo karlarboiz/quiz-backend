@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
@@ -38,10 +39,17 @@ public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
                     "    else 0 " +
                     "    end as totalIncorrect, " +
                     " (select count(t.id) from ItemDataQuiz t " +
-                    " where t.quizUserIdPk = e.idPk ) as totalQuizItems" +
+                    " where t.quizUserIdPk = e.userIdPk and " +
+                    " t.quizItemIdPk = e.idPk ) as totalQuizItems" +
                     " from SaveGameInfo e " +
                     " where e.userIdPk = :userIdPk " +
                     " and e.deleteFlg = false ";
+    final String GET_ALL_NOT_COMPlETED_QUIZZES =
+            "select e from SaveGameInfo e " +
+            "where e.date = :date " +
+                    "and e.userIdPk = :userIdPk" +
+            "and e.completed = false " +
+            "and e.deleteFlg = false ";
     @Query(value = FIND_LATEST_GAME_INFO)
     public SaveGameInfo findLatestGameInfo() throws DataException;
 
@@ -50,4 +58,8 @@ public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
 
     @Query(value = GET_ALL_COMPLETED_ACTIVE_SAVE_GAME_INFO_OF_A_USER)
     public List<Object[]> getAllCompletedActiveSaveGameInfoOfAUser(int userIdPk) throws DataAccessException;
+    
+    
+    @Query(value =GET_ALL_NOT_COMPlETED_QUIZZES )
+    public List<SaveGameInfo> getAllNotCompletedQuizzes(String date,int userIdPk) throws DataAccessException;
 }

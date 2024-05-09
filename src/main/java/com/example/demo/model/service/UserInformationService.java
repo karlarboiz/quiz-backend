@@ -11,4 +11,6 @@ public interface UserInformationService {
 
     public UserInformationInOutDto getUserDetailsUsingUsername(String username);
 
+    public UserInformationInOutDto getUserAndTheirCompletedGames(UserInformationInOutDto outDto);
+
 }

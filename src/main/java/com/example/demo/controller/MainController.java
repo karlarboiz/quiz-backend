@@ -42,6 +42,9 @@ public class MainController {
     private RecordScoreService recordScoreService;
 
     @Autowired
+    private UserInformationService userInformationService;
+
+    @Autowired
     private HttpServletRequest request;
     @PostMapping("/start")
     public ResponseEntity<ResponseMessage<Void>>
@@ -86,7 +89,6 @@ public class MainController {
             responseMessage.setMessage("Game is in Session");
             responseMessage.setSuccess(true);
         }catch (Exception e){
-            System.out.println(e.getMessage());
             responseMessage.setMessage("Something went wrong");
             responseMessage.setSuccess(false);
         }
@@ -204,4 +206,6 @@ public class MainController {
                 
         return ResponseEntity.ok("hello");
     }
+
+
 }

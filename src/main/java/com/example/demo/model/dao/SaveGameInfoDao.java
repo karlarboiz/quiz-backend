@@ -44,12 +44,18 @@ public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
                     " from SaveGameInfo e " +
                     " where e.userIdPk = :userIdPk " +
                     " and e.deleteFlg = false ";
-    final String GET_ALL_NOT_COMPlETED_QUIZZES =
-            "select e from SaveGameInfo e " +
-            "where e.date = :date " +
-                    "and e.userIdPk = :userIdPk" +
-            "and e.completed = false " +
-            "and e.deleteFlg = false ";
+    final String GET_ALL_COMPlETED_QUIZZES_PER_USER =
+            "SELECT e.id_pk,e.username," +
+                    "    IFNULL(completed_quizzes.count_completed, 0) AS something_now " +
+                    "FROM m_user_information e " +
+                    "LEFT JOIN ( " +
+                    "    SELECT g.user_id_pk, COUNT(g.user_id_pk) AS count_completed " +
+                    "    FROM m_save_game_info g " +
+                    "    WHERE g.completed = true " +
+                    "    GROUP BY g.user_id_pk " +
+                    ") AS completed_quizzes ON e.id_pk = completed_quizzes.user_id_pk " +
+                    "INNER JOIN m_user_information_account f ON e.id_pk = f.user_id_pk " +
+                    "WHERE e.delete_flg = false AND f.delete_flg = false ";
     @Query(value = FIND_LATEST_GAME_INFO)
     public SaveGameInfo findLatestGameInfo() throws DataException;
 
@@ -60,6 +66,6 @@ public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
     public List<Object[]> getAllCompletedActiveSaveGameInfoOfAUser(int userIdPk) throws DataAccessException;
     
     
-    @Query(value =GET_ALL_NOT_COMPlETED_QUIZZES )
-    public List<SaveGameInfo> getAllNotCompletedQuizzes(String date,int userIdPk) throws DataAccessException;
+    @Query(value =GET_ALL_COMPlETED_QUIZZES_PER_USER,nativeQuery = true )
+    public List<Object[]> getAllCompletedQuizzesPerUser() throws DataAccessException;
 }

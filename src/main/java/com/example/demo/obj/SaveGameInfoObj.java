@@ -19,4 +19,8 @@ public class SaveGameInfoObj {
     private Long totalIncorrect;
 
     private Long totalQuizItems;
+
+    private String userName;
+
+    private Long completedQuizzes;
 }

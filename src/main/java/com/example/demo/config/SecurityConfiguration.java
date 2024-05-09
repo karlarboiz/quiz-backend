@@ -39,9 +39,10 @@ public class SecurityConfiguration {
                                                 .maximumSessions(1)
                                                 .expiredUrl("/quiz/api/login?expired")
                                 ).sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeRequests(authorizeRequests ->
+               .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/quiz/api/**").permitAll()
+                                .requestMatchers("/quiz/api/info/**").permitAll()
                                 .requestMatchers("/main/user/**").hasAuthority("USER")
 //                                .requestMatchers("/private/**").authenticated()
 //                                .anyRequest().authenticated()

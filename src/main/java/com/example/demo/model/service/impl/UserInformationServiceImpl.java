@@ -6,14 +6,20 @@ import com.example.demo.model.dao.entity.UserInformation;
 import com.example.demo.model.dao.entity.UserInformationAccount;
 import com.example.demo.model.dto.RegistrationInOutDto;
 import com.example.demo.model.dto.UserInformationInOutDto;
+import com.example.demo.model.logic.SaveGameInfoLogic;
 import com.example.demo.model.logic.UserInformationAccountLogic;
 import com.example.demo.model.logic.UserInformationLogic;
 import com.example.demo.model.service.UserInformationService;
 import com.example.demo.obj.UserInformationObj;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserInformationServiceImpl implements UserInformationService {
@@ -22,6 +28,9 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Autowired
     private UserInformationAccountLogic userInformationAccountLogic;
+
+    @Autowired
+    private SaveGameInfoLogic saveGameInfoLogic;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -72,4 +81,32 @@ public class UserInformationServiceImpl implements UserInformationService {
         userInformationInOutDto.setUserInformationObj(userInformationObj);
         return userInformationInOutDto;
     }
+
+    @Override
+    public UserInformationInOutDto getUserAndTheirCompletedGames(UserInformationInOutDto inDto) {
+        UserInformationInOutDto outDto = new UserInformationInOutDto();
+
+        List<UserInformationObj> userInformationObjList = new ArrayList<UserInformationObj>();
+        List<Object[]> completeQuizzesOfUsers = saveGameInfoLogic.getAllCompletedQuizzesPerUser();
+        for(Object[] objects: completeQuizzesOfUsers) {
+            UserInformationObj userInformationObj = new UserInformationObj();
+
+            userInformationObj.setId((Integer) objects[0]);
+
+            userInformationObj.setUsername((String) objects[1]);
+
+            userInformationObj.setCompletedQuizzes((Long) objects[2]);
+
+            userInformationObjList.add(userInformationObj);
+
+        }
+
+
+        outDto.setStudentObjList(userInformationObjList);
+
+        return outDto;
+
+    }
+
+
 }

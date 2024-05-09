@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.dto.RegistrationInOutDto;
+import com.example.demo.model.dto.UserInformationInOutDto;
 import com.example.demo.model.service.AuthenticationService;
 import com.example.demo.model.service.UserInformationService;
+import com.example.demo.obj.UserInformationObj;
 import com.example.demo.request.RequestAuthentication;
 import com.example.demo.response.ResponseAuthentication;
 import com.example.demo.response.ResponseMessage;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/quiz/api")
@@ -40,6 +43,8 @@ public class LoginController {
 
         return ResponseEntity.ok(authenticationService.responseAuthentication(requestAuthentication));
     }
+
+
 
 
 }

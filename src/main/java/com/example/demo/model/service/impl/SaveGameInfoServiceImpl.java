@@ -116,15 +116,17 @@ public class SaveGameInfoServiceImpl implements SaveGameInfoService {
         SaveGameInfoInOutDto outDto = new SaveGameInfoInOutDto();
         List<SaveGameInfoObj> saveGameInfoObjs = new ArrayList<>();
 
-        List<SaveGameInfo> notCompletedQuizzes = saveGameInfoLogic.getAllNotCompletedQuizzes(inOutDto.getDate(), inOutDto.getUserIdPk());
-
-        for(SaveGameInfo saveGameInfo : notCompletedQuizzes){
-            SaveGameInfoObj saveGameInfoObj = new SaveGameInfoObj();
-
-            saveGameInfoObj.setIdPk(saveGameInfo.getIdPk());
-            saveGameInfoObj.setQuizUUID((saveGameInfo.getQuizUUID()));
-
-        }
+//        List<Object[]> notCompletedQuizzes = saveGameInfoLogic.getAllNotCompletedQuizzes(inOutDto.getDate(), inOutDto.getUserIdPk());
+//
+//        for(Object[] saveGameInfo : notCompletedQuizzes){
+//            SaveGameInfoObj saveGameInfoObj = new SaveGameInfoObj();
+//
+//            saveGameInfoObj.setIdPk((Integer) saveGameInfo[0]);
+//            saveGameInfoObj.setUserName((String) saveGameInfo[1]);
+//            saveGameInfoObj.setCompletedQuizzes((Long) saveGameInfo[2]);
+//
+//            saveGameInfoObjs.add(saveGameInfoObj);
+//        }
 
         return outDto;
     }

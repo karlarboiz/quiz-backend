@@ -2,12 +2,12 @@ package com.example.demo.obj;
 
 import lombok.Data;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Data
 public class UserInformationObj {
     private int id;
-
 
     private String firstName;
 
@@ -19,5 +19,7 @@ public class UserInformationObj {
 
     private int age;
 
+    private String username;
 
+    private Long completedQuizzes;
 }

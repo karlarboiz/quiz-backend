@@ -23,4 +23,8 @@ public class SaveGameInfoObj {
     private String userName;
 
     private Long completedQuizzes;
+
+    private Long incompleteQuizzes;
+
+    private String date;
 }

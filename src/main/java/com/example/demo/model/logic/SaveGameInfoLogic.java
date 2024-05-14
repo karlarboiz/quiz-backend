@@ -15,4 +15,8 @@ public interface SaveGameInfoLogic {
     public List<Object[]> getAllCompletedActiveSaveGameInfoOfAUser(int userIdPk);
 
     public List<Object[]> getAllCompletedQuizzesPerUser();
+
+    public List<Object[]> getAllNotCompletedQuizzes(int userIdPk);
+
+
 }

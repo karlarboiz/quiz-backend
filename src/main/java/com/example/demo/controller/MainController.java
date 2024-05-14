@@ -207,5 +207,18 @@ public class MainController {
         return ResponseEntity.ok("hello");
     }
 
+            @GetMapping("/game-history/incomplete-quizzes")
+    public ResponseEntity<List<SaveGameInfoObj>> getIncompleteQuizByUser(){
+
+        SaveGameInfoInOutDto inDto = new SaveGameInfoInOutDto();
+
+        inDto.setUserIdPk(loggedInUserService.getLoggedInUserDetails().getUserInformationObj().getId());
+        SaveGameInfoInOutDto outDto = saveGameInfoService.getAllNotCompletedQuizzes(inDto);
+
+        List<SaveGameInfoObj> saveGameInfoObjList = outDto.getSavedGameDetails();
+
+        return ResponseEntity.ok(saveGameInfoObjList);
+    }
+
 
 }

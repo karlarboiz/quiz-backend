@@ -56,7 +56,6 @@ public class ItemDataQuizServiceImpl implements ItemDataQuizService {
         }
 
         itemDataQuizLogic.saveListItemDataQuiz(itemDataQuizList);
-
     }
 
     @Override

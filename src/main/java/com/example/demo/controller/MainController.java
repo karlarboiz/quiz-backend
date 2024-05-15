@@ -203,11 +203,25 @@ public class MainController {
 
     @GetMapping("/game-history/{quizUUID}")
     public ResponseEntity<String> getSpecificQuizHistoryDetails(){
-                
+
         return ResponseEntity.ok("hello");
     }
 
-            @GetMapping("/game-history/incomplete-quizzes")
+    @GetMapping("/resume-quiz/{id}")
+    public ResponseEntity<List<ItemDataQuizObj>> getResumeQuizUnansweredItems(@PathVariable int id){
+        ItemDataQuizInOutDto inDto = new ItemDataQuizInOutDto();
+
+        inDto.setSaveQuizInfoIdPk(id);
+
+        inDto.setQuizUserIdPk(loggedInUserService.getLoggedInUserDetails().getUserInformationObj().getId());
+
+        ItemDataQuizInOutDto outDto = itemDataQuizService.getListOfQuizItems(inDto);
+
+        List<ItemDataQuizObj> itemDataQuizObjList = outDto.getItemDataQuizObjList();
+
+        return ResponseEntity.ok(itemDataQuizObjList);
+    }
+    @GetMapping("/game-history/incomplete-quizzes")
     public ResponseEntity<List<SaveGameInfoObj>> getIncompleteQuizByUser(){
 
         SaveGameInfoInOutDto inDto = new SaveGameInfoInOutDto();

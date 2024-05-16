@@ -142,6 +142,39 @@ public class MainController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
     }
 
+    @PutMapping("/game-resume/{id}")
+    public ResponseEntity<ResponseMessage<Void>> saveGameInfoResume(@RequestBody ItemInOutDto itemInOutDto,@PathVariable int id) {
+
+
+
+        ItemDataQuizInOutDto itemDataQuizInOutDto = new ItemDataQuizInOutDto();
+
+        itemDataQuizInOutDto.setSaveQuizInfoIdPk(id);
+        itemDataQuizInOutDto.setQuizUserIdPk(loggedInUserService.getLoggedInUserDetails().getUserInformationObj().getId());
+        itemDataQuizInOutDto.setQuizIdTag(itemInOutDto.getQuizIdTag());
+        itemDataQuizInOutDto.setUserAnswer(itemInOutDto.getUserAnswer());
+        itemDataQuizService.saveItemDataQuiz(itemDataQuizInOutDto);
+        recordScoreService.saveRecordedScore(itemDataQuizInOutDto);
+
+        ItemDataQuizInOutDto itemDataQuizInOutDto1 = itemDataQuizService.getListOfAnsweredQuizItems(itemDataQuizInOutDto);
+        ItemDataQuizInOutDto itemDataQuizInOutDto2 = itemDataQuizService.getListOfQuizItems(itemDataQuizInOutDto);
+        List<ItemDataQuizObj> answeredItemDataQuizObjList = itemDataQuizInOutDto1.getItemDataQuizObjList();
+        List<ItemDataQuizObj> unansweredItemDataQuizObjList = itemDataQuizInOutDto2.getItemDataQuizObjList();
+
+        if(answeredItemDataQuizObjList.size() == unansweredItemDataQuizObjList.size()) {
+            SaveGameInfoInOutDto saveGameInfoInDto = new SaveGameInfoInOutDto();
+
+            saveGameInfoInDto.setIdPk(id);
+            SaveGameInfoInOutDto saveGameInfoInOutDto  = saveGameInfoService.findSaveGameInfoBasedOnIdPk(saveGameInfoInDto);
+            saveGameInfoInOutDto.setUpdateSaveGameInfo(true);
+            saveGameInfoService.updateSaveGameInfo(saveGameInfoInOutDto);
+        }
+        ResponseMessage<Void> responseMessage = new ResponseMessage<>();
+
+        responseMessage.setMessage("Item Answered");
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
+    }
+
     @GetMapping("/game/session")
     public ResponseEntity<GameCheckObj> checkGameHandler(){
         HttpSession session = request.getSession(true);

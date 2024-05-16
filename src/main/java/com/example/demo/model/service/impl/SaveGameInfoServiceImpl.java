@@ -72,6 +72,17 @@ public class SaveGameInfoServiceImpl implements SaveGameInfoService {
     }
 
     @Override
+    public SaveGameInfoInOutDto findSaveGameInfoBasedOnIdPk(SaveGameInfoInOutDto inDto) {
+        SaveGameInfoInOutDto outDto = new SaveGameInfoInOutDto();
+
+        SaveGameInfo saveGameInfo = saveGameInfoLogic.findLatestSaveGameInfo();
+
+        outDto.setIdPk(saveGameInfo.getIdPk());
+
+        return  outDto;
+    }
+
+    @Override
     public void updateSaveGameInfo(SaveGameInfoInOutDto inOutDto){
         int saveGameInfoIdPk = inOutDto.getIdPk();
 

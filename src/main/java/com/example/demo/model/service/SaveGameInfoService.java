@@ -8,6 +8,8 @@ public interface SaveGameInfoService {
 
     public SaveGameInfoInOutDto findLatestSaveGameInfo();
 
+    public SaveGameInfoInOutDto findSaveGameInfoBasedOnIdPk(SaveGameInfoInOutDto inDto);
+
     public void updateSaveGameInfo(SaveGameInfoInOutDto inOutDto);
 
     public SaveGameInfoInOutDto getAllDetailsOfSavedGames(SaveGameInfoInOutDto inDto);

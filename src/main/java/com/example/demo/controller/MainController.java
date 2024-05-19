@@ -137,15 +137,13 @@ public class MainController {
             saveGameInfoService.updateSaveGameInfo(saveGameInfoInOutDto);
         }
         ResponseMessage<Void> responseMessage = new ResponseMessage<>();
-
+        responseMessage.setSuccess(true);
         responseMessage.setMessage("Item Answered");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
     }
 
     @PutMapping("/game-resume/{id}")
     public ResponseEntity<ResponseMessage<Void>> saveGameInfoResume(@RequestBody ItemInOutDto itemInOutDto,@PathVariable int id) {
-
-
 
         ItemDataQuizInOutDto itemDataQuizInOutDto = new ItemDataQuizInOutDto();
 
@@ -170,7 +168,7 @@ public class MainController {
             saveGameInfoService.updateSaveGameInfo(saveGameInfoInOutDto);
         }
         ResponseMessage<Void> responseMessage = new ResponseMessage<>();
-
+        responseMessage.setSuccess(true);
         responseMessage.setMessage("Item Answered");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
     }
@@ -206,6 +204,24 @@ public class MainController {
 
         return ResponseEntity.ok(itemDataQuizObjList);
     }
+
+    @GetMapping("/fetch/game-result/{id}")
+    public ResponseEntity<List<ItemDataQuizObj>> fetchGameResultBasedOnIdPk(@PathVariable int id){
+
+        ItemDataQuizInOutDto itemDataQuizInOutDto = new ItemDataQuizInOutDto();
+
+        itemDataQuizInOutDto.setSaveQuizInfoIdPk(id);
+        itemDataQuizInOutDto.setQuizUserIdPk(loggedInUserService.getLoggedInUserDetails().getUserInformationObj().getId());
+
+        ItemDataQuizInOutDto outDto = itemDataQuizService.getListOfAnswerQuizItemsBasedOnUserIdPkAndItemIdPk(itemDataQuizInOutDto);
+        List<ItemDataQuizObj> itemDataQuizObjList = outDto.getItemDataQuizObjList();
+
+
+  
+        return ResponseEntity.ok(itemDataQuizObjList);
+    }
+
+
     @GetMapping("/profile")
     public ResponseEntity<ResponseProfile> getProfile() throws Exception {
         ResponseProfile responseProfile = new ResponseProfile();

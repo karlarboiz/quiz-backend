@@ -6,7 +6,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
@@ -18,7 +17,6 @@ public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
             " Select e from SaveGameInfo e " +
                     " where e.idPk = :idPk " +
                     " and e.deleteFlg = false ";
-
     final String GET_ALL_COMPLETED_ACTIVE_SAVE_GAME_INFO_OF_A_USER =
             "select " +
                     " e.idPk, e.quizUUID, " +
@@ -87,5 +85,7 @@ public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
     public List<Object[]> getAllNotCompletedQuizzes(int userIdPk) throws DataAccessException;
 
 
+    @Query(value = UPDATE_SAVE_GAME_INFO_BASED_ON_ID_PK)
+    public SaveGameInfo findSaveGameInfoBasedOnIdPk(int idPk) throws  DataAccessException;
 
 }

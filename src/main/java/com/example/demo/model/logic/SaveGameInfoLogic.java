@@ -10,6 +10,8 @@ public interface SaveGameInfoLogic {
 
     public SaveGameInfo findLatestSaveGameInfo();
 
+    public SaveGameInfo findSaveGameInfoBasedOnIdPk(int idPk);
+
     public SaveGameInfo updateSaveGameInfoIdPk(int idPk);
 
     public List<Object[]> getAllCompletedActiveSaveGameInfoOfAUser(int userIdPk);

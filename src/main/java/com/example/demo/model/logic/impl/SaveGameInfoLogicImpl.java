@@ -26,6 +26,10 @@ public class SaveGameInfoLogicImpl implements SaveGameInfoLogic {
     }
 
     @Override
+    public SaveGameInfo findSaveGameInfoBasedOnIdPk(int idPk) {
+        return saveGameInfoDao.findSaveGameInfoBasedOnIdPk(idPk);
+    }
+    @Override
     public SaveGameInfo updateSaveGameInfoIdPk(int idPk) {
         return saveGameInfoDao.updateSaveGameInfoBasedOnIdPk(idPk);
     }

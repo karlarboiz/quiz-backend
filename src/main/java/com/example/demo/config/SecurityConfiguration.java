@@ -42,8 +42,7 @@ public class SecurityConfiguration {
                .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/quiz/api/**").permitAll()
-                                .requestMatchers("/quiz/api/info/**").permitAll()
-                                .requestMatchers("/main/user/**").hasAuthority("USER")
+                                .requestMatchers("/main/user/**").authenticated()
 //                                .requestMatchers("/private/**").authenticated()
 //                                .anyRequest().authenticated()
                 )

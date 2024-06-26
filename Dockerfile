@@ -1,5 +1,5 @@
-# Use an official Maven image to build the project
-FROM maven:3.8.1-openjdk-11 AS build
+# Use an official Maven image with OpenJDK 17 to build the project
+FROM maven:3.8.5-openjdk-17 AS build
 
 # Set the working directory in the container
 WORKDIR /app
@@ -10,8 +10,8 @@ COPY . .
 # Package the application
 RUN mvn clean package
 
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:11-jre-slim
+# Use an official OpenJDK 17 runtime as a parent image
+FROM openjdk:17-jdk-slim
 
 # Set the working directory in the container
 WORKDIR /app

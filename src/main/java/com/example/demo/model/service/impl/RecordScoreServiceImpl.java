@@ -81,17 +81,4 @@ public class RecordScoreServiceImpl implements RecordScoreService {
         return recordQuizInOutDto;
     }
 
-
-//    @Override
-//    public RecordQuizInOutDto getRecordedQuizDataUsingQuizIdTagItemIdAndUserId(ItemDataQuizInOutDto itemDataQuizInOutDto){
-//        String quizIdTag = itemDataQuizInOutDto.getQuizIdTag();
-//        int itemId = itemDataQuizInOutDto.getSaveQuizInfoIdPk();
-//        int quizId = itemDataQuizInOutDto.getQuizUserIdPk();
-//
-//
-//        RecordQuizInOutDto recordQuizInOutDto = new RecordQuizInOutDto();
-//
-//
-//
-//    }
 }

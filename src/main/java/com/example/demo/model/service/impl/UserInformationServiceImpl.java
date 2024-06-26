@@ -100,8 +100,6 @@ public class UserInformationServiceImpl implements UserInformationService {
             userInformationObjList.add(userInformationObj);
 
         }
-
-
         outDto.setStudentObjList(userInformationObjList);
 
         return outDto;

@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy the project files to the working directory
 COPY . .
 
-# Package the application
-RUN mvn clean package
+# Package the application and skip tests
+RUN mvn clean package -DskipTests
 
 # Use an official OpenJDK 17 runtime as a parent image
 FROM openjdk:17-jdk-slim

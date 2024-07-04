@@ -43,7 +43,7 @@ public interface SaveGameInfoDao extends JpaRepository<SaveGameInfo,Integer> {
                     " where e.userIdPk = :userIdPk " +
                     " and e.deleteFlg = false ";
     final String GET_ALL_COMPlETED_QUIZZES_PER_USER =
-            "SELECT e.id_pk,e.username," +
+            "SELECT e.id_pk,e.username, e.reg_date," +
                     "    IFNULL(completed_quizzes.count_completed, 0) AS something_now " +
                     "FROM m_user_information e " +
                     "LEFT JOIN ( " +

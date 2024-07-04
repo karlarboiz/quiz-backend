@@ -24,8 +24,6 @@ public class NonRestrictedController {
         UserInformationInOutDto inDto = new UserInformationInOutDto();
         UserInformationInOutDto outDto = userInformationService.getUserAndTheirCompletedGames(inDto);
         List<UserInformationObj> userInformationObjList =  outDto.getStudentObjList();
-
-
         return ResponseEntity.ok(userInformationObjList);
     }
 }

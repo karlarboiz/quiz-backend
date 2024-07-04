@@ -94,9 +94,8 @@ public class UserInformationServiceImpl implements UserInformationService {
             userInformationObj.setId((Integer) objects[0]);
 
             userInformationObj.setUsername((String) objects[1]);
-
-            userInformationObj.setCompletedQuizzes((Long) objects[2]);
-
+            userInformationObj.setRegistrationDate((Timestamp) objects[2]);
+            userInformationObj.setCompletedQuizzes((Long) objects[3]);
             userInformationObjList.add(userInformationObj);
 
         }

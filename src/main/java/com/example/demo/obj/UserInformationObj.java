@@ -3,6 +3,7 @@ package com.example.demo.obj;
 import lombok.Data;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Data
@@ -22,4 +23,6 @@ public class UserInformationObj {
     private String username;
 
     private Long completedQuizzes;
+
+    private Timestamp registrationDate;
 }

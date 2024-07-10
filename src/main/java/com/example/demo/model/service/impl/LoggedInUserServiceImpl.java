@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class LoggedInUserServiceImpl implements LoggedInUserService {
@@ -26,9 +27,11 @@ public class LoggedInUserServiceImpl implements LoggedInUserService {
         UserInformationObj userInformationObj = new UserInformationObj();
         String username = authentication.getName();
 
-        UserInformation userInformation = userInformationLogic.matchedLoginCredentialsUsingUsername(username);
-        userInformationObj.setId(userInformation.getIdPk());
-        userInformationObj.setEmail(userInformation.getEmail());
+        List<Object[]> userInformation = userInformationLogic.matchedLoginCredentialsUsingUsername(username);
+
+
+        userInformationObj.setId((Integer) userInformation.get(0)[0]);
+        userInformationObj.setEmail((String) userInformation.get(0)[2]);
 
         inOutDto.setUserInformationObj(userInformationObj);
 

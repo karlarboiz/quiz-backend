@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -69,16 +70,22 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public UserInformationInOutDto getUserDetailsUsingUsername(String username) {
+
         UserInformationInOutDto userInformationInOutDto = new UserInformationInOutDto();
         UserInformationObj userInformationObj = new UserInformationObj();
-        UserInformation userInformation = userInformationLogic.matchedLoginCredentialsUsingUsername(username);
+        List<Object[]> userInformation = userInformationLogic.matchedLoginCredentialsUsingUsername(username);
 
-        if(userInformation == null) {
+        if(userInformation.isEmpty()) {
             return userInformationInOutDto;
         }
-        userInformationObj.setEmail(userInformation.getEmail());
+        userInformationObj.setUsername((String) userInformation.get(0)[1]);
+        userInformationObj.setEmail((String) userInformation.get(0)[2]);
+        userInformationObj.setFirstName((String) userInformation.get(0)[3]);
+        userInformationObj.setLastName((String) userInformation.get(0)[4]);
+
 
         userInformationInOutDto.setUserInformationObj(userInformationObj);
+
         return userInformationInOutDto;
     }
 
@@ -107,3 +114,4 @@ public class UserInformationServiceImpl implements UserInformationService {
 
 
 }
+ 

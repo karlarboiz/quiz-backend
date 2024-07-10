@@ -20,15 +20,17 @@ public interface UserInformationDao extends JpaRepository<UserInformation,Intege
                     " and f.deleteFlg = false";
 
     final String FIND_USER_BY_USERNAME =
-            "SELECT e from UserInformation e" +
+            "SELECT e.idPk, e.username, e.email, f.firstName,f.lastName " +
+                    " from UserInformation e " +
                     " inner join UserInformationAccount f " +
                     " on e.idPk = f.userIdPk" +
                     " where e.username = :username" +
                     " and e.deleteFlg = false" +
                     " and f.deleteFlg = false";
+
     @Query(value = FIND_USER_BY_EMAIL)
     public UserInformation matchedLoginCredentials(@Param("emailParam") String email) throws DataAccessException;
 
     @Query(value = FIND_USER_BY_USERNAME)
-    public UserInformation matchedLoginCredentialsUsingUsername(@Param("username") String username) throws DataAccessException;
+    public List<Object[]> matchedLoginCredentialsUsingUsername(@Param("username") String username) throws DataAccessException;
 }

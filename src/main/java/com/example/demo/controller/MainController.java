@@ -8,6 +8,7 @@ import com.example.demo.obj.UserInformationObj;
 import com.example.demo.request.RequestListOfQuizData;
 import com.example.demo.response.ResponseMessage;
 import com.example.demo.response.ResponseProfile;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -281,6 +282,20 @@ public class MainController {
         List<SaveGameInfoObj> saveGameInfoObjList = outDto.getSavedGameDetails();
 
         return ResponseEntity.ok(saveGameInfoObjList);
+    }
+
+    @GetMapping("/profile-details")
+    public ResponseEntity<UserInformationObj> getProfileDetais() {
+      UserInformationInOutDto userInformationInOutDto = new UserInformationInOutDto();
+
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+
+        UserInformationInOutDto userInformationInOutDto1 = userInformationService.getUserDetailsUsingUsername(authentication.getName());
+
+        UserInformationObj userInformationObj = userInformationInOutDto1.getUserInformationObj();
+
+      return ResponseEntity.ok(userInformationObj);
+
     }
 
 

@@ -40,8 +40,10 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseAuthentication> loginMethod(@RequestBody RequestAuthentication requestAuthentication) throws SQLException {
-        
-        return ResponseEntity.ok(authenticationService.responseAuthentication(requestAuthentication));
+        ResponseAuthentication responseAuthentication = authenticationService.responseAuthentication(requestAuthentication);
+
+        System.out.println(responseAuthentication);
+        return ResponseEntity.ok(responseAuthentication);
     }
 
 

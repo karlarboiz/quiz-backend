@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import com.example.demo.model.dto.UserInformationInOutDto;
 import com.example.demo.model.service.UserInformationService;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             @NonNull  HttpServletRequest request,
             @NonNull  HttpServletResponse response,
-            @NonNull  FilterChain filterChain) throws ServletException, IOException {
+            @NonNull  FilterChain filterChain) throws ServletException, IOException, MalformedJwtException {
 
         final String authHeader = request.getHeader("Authorization");
 
@@ -56,7 +57,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         username = jwtService.extractUsername(jwt);
 
         UserInformationInOutDto userInformationInOutDto = userInformationService.getUserDetailsUsingUsername(username);
+        System.out.println(userInformationInOutDto.getUserInformationObj());
         userEmail = userInformationInOutDto.getUserInformationObj().getEmail();
+        System.out.println("This is the email"+userEmail);
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);

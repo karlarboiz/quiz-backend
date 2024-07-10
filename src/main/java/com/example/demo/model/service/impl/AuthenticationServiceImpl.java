@@ -8,6 +8,8 @@ import com.example.demo.request.RequestAuthentication;
 import com.example.demo.response.ResponseAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,21 +35,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public ResponseAuthentication responseAuthentication(RequestAuthentication requestAuthentication) {
+
+
         ResponseAuthentication responseAuthentication = new ResponseAuthentication();
 
-       authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        requestAuthentication.getEmail(),
-                        requestAuthentication.getPassword()
-                )
-        );
 
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            requestAuthentication.getEmail(),
+                            requestAuthentication.getPassword()
+                    )
+            );
 
-        UserInformation userInformation = userInformationLogic.matchedLoginCredentials(requestAuthentication.getEmail());
+            UserInformation userInformation = userInformationLogic.matchedLoginCredentials(requestAuthentication.getEmail());
+            if(userInformation == null) {
+                responseAuthentication.setValid(false);
+                responseAuthentication.setToken(null);
 
-        String jwtToken =  jwtService.generateToken(userInformation);
-        responseAuthentication.setValid(true);
-        responseAuthentication.setToken(jwtToken);
+            }else {
+                String jwtToken =  jwtService.generateToken(userInformation);
+                responseAuthentication.setValid(true);
+                responseAuthentication.setToken(jwtToken);
+
+            }
+        }catch (InternalAuthenticationServiceException | BadCredentialsException e) {
+            responseAuthentication.setMessage("Credentials not recognized. Please try again!");
+        }
         return responseAuthentication;
 
 

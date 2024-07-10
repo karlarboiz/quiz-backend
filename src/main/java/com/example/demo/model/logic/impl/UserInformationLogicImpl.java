@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class UserInformationLogicImpl implements UserInformationLogic {
@@ -31,7 +32,7 @@ public class UserInformationLogicImpl implements UserInformationLogic {
     }
 
     @Override
-    public UserInformation matchedLoginCredentialsUsingUsername(String username)  {
+    public List<Object[]> matchedLoginCredentialsUsingUsername(String username)  {
         return userInformationDao.matchedLoginCredentialsUsingUsername(username);
     }
  }

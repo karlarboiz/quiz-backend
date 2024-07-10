@@ -16,5 +16,5 @@ public class RegistrationInOutDto {
 
     private String password;
 
-
+    private boolean isUpdate;
 }

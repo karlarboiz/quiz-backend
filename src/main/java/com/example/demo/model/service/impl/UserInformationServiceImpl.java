@@ -42,30 +42,50 @@ public class UserInformationServiceImpl implements UserInformationService {
         UserInformationAccount userInformationAccount = new UserInformationAccount();
         Timestamp date = new Timestamp(System.currentTimeMillis());
 
+        if(!userInformationEntity.isUpdate()) {
+            userInformation.setRegDate(date);
+            userInformation.setUsername(userInformationEntity.getUsername());
+            userInformation.setEmail(userInformationEntity.getEmail());
+            userInformation.setRole(Role.USER);
+            userInformation.setPassword(passwordEncoder.encode(userInformationEntity.getPassword()));
+            userInformation.setUpdateId(userInformationEntity.getUsername());
+            userInformation.setRegId(userInformationEntity.getUsername());
+            userInformation.setUpdateDate(date);
+            userInformation.setDeleteFlg(false);
+            userInformationLogic.saveUserInformation(userInformation);
 
-        userInformation.setEmail(userInformationEntity.getEmail());
+            userInformationAccount.setUserIdPk(userInformation.getIdPk());
+            userInformationAccount.setFirstName(userInformationEntity.getFirstName());
+            userInformationAccount.setLastName(userInformationEntity.getLastName());
+            userInformationAccount.setDisplayPicture("thisisdisplaypicture");
+            userInformationAccount.setRegDate(date);
+            userInformationAccount.setRegId(userInformationEntity.getUsername());
+            userInformationAccount.setUpdateId(userInformationEntity.getUsername());
+            userInformationAccount.setUpdateDate(date);
+            userInformationAccount.setDeleteFlg(false);
+            userInformationAccountLogic.saveUserInformationAccount(userInformationAccount);
+        }else {
+            userInformation.setUsername(userInformationEntity.getUsername());
+            userInformation.setEmail(userInformationEntity.getEmail());
 
-        userInformation.setRegDate(date);
-        userInformation.setUsername(userInformationEntity.getUsername());
-        userInformation.setRole(Role.USER);
-        userInformation.setPassword(passwordEncoder.encode(userInformationEntity.getPassword()));
-        userInformation.setUpdateId("sample");
-        userInformation.setRegId("Sample");
-        userInformation.setUpdateDate(date);
-        userInformation.setDeleteFlg(false);
-        userInformationLogic.saveUserInformation(userInformation);
+            userInformation.setPassword(passwordEncoder.encode(userInformationEntity.getPassword()));
+            userInformation.setUpdateId(userInformationEntity.getUsername());
+            userInformation.setRegId(userInformationEntity.getUsername());
+            userInformation.setUpdateDate(date);
+            userInformation.setDeleteFlg(false);
+            userInformationLogic.saveUserInformation(userInformation);
 
-
-        userInformationAccount.setUserIdPk(userInformation.getIdPk());
-        userInformationAccount.setFirstName(userInformationEntity.getFirstName());
-        userInformationAccount.setLastName(userInformationEntity.getLastName());
-        userInformationAccount.setDisplayPicture("thisisdisplaypicture");
-        userInformationAccount.setRegDate(date);
-        userInformationAccount.setRegId("sample");
-        userInformationAccount.setUpdateId("sample");
-        userInformationAccount.setUpdateDate(date);
-        userInformationAccount.setDeleteFlg(false);
-        userInformationAccountLogic.saveUserInformationAccount(userInformationAccount);
+            userInformationAccount.setUserIdPk(userInformation.getIdPk());
+            userInformationAccount.setFirstName(userInformationEntity.getFirstName());
+            userInformationAccount.setLastName(userInformationEntity.getLastName());
+            userInformationAccount.setDisplayPicture("thisisdisplaypicture");
+            userInformationAccount.setRegDate(date);
+            userInformationAccount.setRegId(userInformationEntity.getUsername());
+            userInformationAccount.setUpdateId(userInformationEntity.getUsername());
+            userInformationAccount.setUpdateDate(date);
+            userInformationAccount.setDeleteFlg(false);
+            userInformationAccountLogic.saveUserInformationAccount(userInformationAccount);
+        }
     }
 
     @Override

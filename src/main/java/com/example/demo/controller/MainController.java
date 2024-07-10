@@ -295,7 +295,18 @@ public class MainController {
         UserInformationObj userInformationObj = userInformationInOutDto1.getUserInformationObj();
 
       return ResponseEntity.ok(userInformationObj);
+    }
 
+    @PutMapping("/profile-details/update")
+    public ResponseEntity<ResponseMessage<Void>> updateProfileDetails(@RequestBody RegistrationInOutDto registrationInOutDto) {
+        ResponseMessage<Void> responseMessage = new ResponseMessage<>();
+
+        userInformationService.saveUserInformation(registrationInOutDto);
+
+        responseMessage.setMessage("Your Information has been updated!");
+        responseMessage.setSuccess(true);
+
+        return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
     }
 
 

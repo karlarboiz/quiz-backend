@@ -103,7 +103,6 @@ public class UserInformationServiceImpl implements UserInformationService {
         userInformationObj.setFirstName((String) userInformation.get(0)[3]);
         userInformationObj.setLastName((String) userInformation.get(0)[4]);
 
-
         userInformationInOutDto.setUserInformationObj(userInformationObj);
 
         return userInformationInOutDto;
@@ -119,7 +118,6 @@ public class UserInformationServiceImpl implements UserInformationService {
             UserInformationObj userInformationObj = new UserInformationObj();
 
             userInformationObj.setId((Integer) objects[0]);
-
             userInformationObj.setUsername((String) objects[1]);
             userInformationObj.setRegistrationDate((Timestamp) objects[2]);
             userInformationObj.setCompletedQuizzes((Long) objects[3]);

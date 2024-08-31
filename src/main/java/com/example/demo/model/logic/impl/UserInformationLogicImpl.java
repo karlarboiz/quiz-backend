@@ -33,6 +33,13 @@ public class UserInformationLogicImpl implements UserInformationLogic {
 
     @Override
     public List<Object[]> matchedLoginCredentialsUsingUsername(String username)  {
+
         return userInformationDao.matchedLoginCredentialsUsingUsername(username);
+    }
+
+
+    @Override
+    public List<UserInformation> getUserInfoByUsername(String username) {
+        return userInformationDao.getUserInfoByUsername(username);
     }
  }

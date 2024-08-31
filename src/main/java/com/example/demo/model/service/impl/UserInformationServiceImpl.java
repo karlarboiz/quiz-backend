@@ -1,26 +1,30 @@
 package com.example.demo.model.service.impl;
 
 
+import com.example.demo.common.CommonConstant;
 import com.example.demo.model.dao.entity.Role;
 import com.example.demo.model.dao.entity.UserInformation;
 import com.example.demo.model.dao.entity.UserInformationAccount;
 import com.example.demo.model.dto.RegistrationInOutDto;
+import com.example.demo.model.dto.SavingDto;
 import com.example.demo.model.dto.UserInformationInOutDto;
 import com.example.demo.model.logic.SaveGameInfoLogic;
 import com.example.demo.model.logic.UserInformationAccountLogic;
 import com.example.demo.model.logic.UserInformationLogic;
 import com.example.demo.model.service.UserInformationService;
+import com.example.demo.obj.RegisterInputsObj;
 import com.example.demo.obj.UserInformationObj;
-import org.apache.catalina.User;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserInformationServiceImpl implements UserInformationService {
@@ -36,8 +40,51 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private final Validator validator;
+
+    // Injecting the LocalValidatorFactoryBean using the @Qualifier annotation
+
+    public UserInformationServiceImpl(@Qualifier("localValidatorFactoryBean") Validator validator) {
+
+        this.validator = validator;
+
+    }
+
+
     @Override
-    public void saveUserInformation(RegistrationInOutDto userInformationEntity) {
+    public RegistrationInOutDto validateUserRegistration(RegistrationInOutDto registrationInOutDto) {
+
+        RegistrationInOutDto registrationValidation = new RegistrationInOutDto();
+
+        RegisterInputsObj registerInputsObj = new RegisterInputsObj();
+
+        registerInputsObj.setFirstName(registrationInOutDto.getFirstName());
+
+        registerInputsObj.setLastName(registrationInOutDto.getLastName());
+
+        registerInputsObj.setEmail(registrationInOutDto.getEmail());
+
+        registerInputsObj.setUsername(registrationInOutDto.getUsername());
+
+        registerInputsObj.setPassword(registrationInOutDto.getPassword());
+
+        Set<ConstraintViolation<RegisterInputsObj>> violations = validator.validate(registerInputsObj);
+
+        List<String> regResponseErrors=  new ArrayList<>();
+        for(ConstraintViolation item: violations) {
+            regResponseErrors.add(item.getMessage());
+        }
+
+        registrationValidation.setValid(!regResponseErrors.isEmpty());
+
+        registrationValidation.setResponseRegErrors(regResponseErrors);
+
+        return  registrationValidation;
+    }
+
+    @Override
+    public SavingDto saveUserInformation(RegistrationInOutDto userInformationEntity) {
+        SavingDto savingDto = new SavingDto();
         UserInformation userInformation = new UserInformation();
         UserInformationAccount userInformationAccount = new UserInformationAccount();
         Timestamp date = new Timestamp(System.currentTimeMillis());
@@ -86,6 +133,8 @@ public class UserInformationServiceImpl implements UserInformationService {
             userInformationAccount.setDeleteFlg(false);
             userInformationAccountLogic.saveUserInformationAccount(userInformationAccount);
         }
+        savingDto.setSaveResult(CommonConstant.RETURN_CD);
+        return savingDto;
     }
 
     @Override

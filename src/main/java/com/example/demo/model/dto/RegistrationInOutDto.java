@@ -3,6 +3,8 @@ package com.example.demo.model.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class RegistrationInOutDto {
 
@@ -17,4 +19,12 @@ public class RegistrationInOutDto {
     private String password;
 
     private boolean isUpdate;
+
+    private boolean isValid;
+
+    private List<String> responseRegErrors;
+
+    private boolean isSuccess;
+
+
 }

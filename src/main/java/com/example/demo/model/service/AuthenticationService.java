@@ -7,5 +7,7 @@ import java.sql.SQLException;
 
 public interface AuthenticationService {
 
+    public ResponseAuthentication validateResponseAuthentication(RequestAuthentication requestAuthentication);
+
     public ResponseAuthentication responseAuthentication(RequestAuthentication requestAuthentication) throws SQLException;
 }

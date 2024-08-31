@@ -18,6 +18,4 @@ public class UserInformationInOutDto {
     private String quizUUID;
 
     private boolean updateSaveGameInfo;
-
-
 }

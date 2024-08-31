@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.dto.*;
 import com.example.demo.model.service.*;
+import com.example.demo.obj.GameCheckObj;
 import com.example.demo.obj.ItemDataQuizObj;
 import com.example.demo.obj.SaveGameInfoObj;
 import com.example.demo.obj.UserInformationObj;
@@ -48,10 +49,10 @@ public class MainController {
     @Autowired
     private HttpServletRequest request;
     @PostMapping("/start")
-    public ResponseEntity<ResponseMessage<Void>>
+    public ResponseEntity<ResponseMessage>
     saveGameInfo(@RequestBody List<RequestListOfQuizData> requestListOfQuizData) {
 
-        ResponseMessage<Void> responseMessage = new ResponseMessage<>();
+        ResponseMessage responseMessage = new ResponseMessage();
         try {
             UUID quizUUID = UUID.randomUUID();
             UserInformationObj userInformationObj = new UserInformationObj();
@@ -114,7 +115,7 @@ public class MainController {
         return ResponseEntity.ok(itemDataQuizObjList);
     }
     @PutMapping("/game")
-    public ResponseEntity<ResponseMessage<Void>> saveGameInfo(@RequestBody ItemInOutDto itemInOutDto) {
+    public ResponseEntity<ResponseMessage> saveGameInfo(@RequestBody ItemInOutDto itemInOutDto) {
 
         SaveGameInfoInOutDto saveGameInfoInOutDto  = saveGameInfoService.findLatestSaveGameInfo();
 
@@ -137,14 +138,15 @@ public class MainController {
             saveGameInfoInOutDto.setUpdateSaveGameInfo(true);
             saveGameInfoService.updateSaveGameInfo(saveGameInfoInOutDto);
         }
-        ResponseMessage<Void> responseMessage = new ResponseMessage<>();
+        ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setSuccess(true);
         responseMessage.setMessage("Item Answered");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
     }
 
     @PutMapping("/game-resume/{id}")
-    public ResponseEntity<ResponseMessage<Void>> saveGameInfoResume(@RequestBody ItemInOutDto itemInOutDto,@PathVariable int id) {
+    public ResponseEntity<ResponseMessage>
+    saveGameInfoResume(@RequestBody ItemInOutDto itemInOutDto,@PathVariable int id) {
 
         ItemDataQuizInOutDto itemDataQuizInOutDto = new ItemDataQuizInOutDto();
 
@@ -168,7 +170,7 @@ public class MainController {
             saveGameInfoInOutDto.setUpdateSaveGameInfo(true);
             saveGameInfoService.updateSaveGameInfo(saveGameInfoInOutDto);
         }
-        ResponseMessage<Void> responseMessage = new ResponseMessage<>();
+        ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setSuccess(true);
         responseMessage.setMessage("Item Answered");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
@@ -224,7 +226,7 @@ public class MainController {
 
 
     @GetMapping("/profile")
-    public ResponseEntity<ResponseProfile> getProfile() throws Exception {
+    public ResponseEntity<ResponseProfile> getProfile() {
         ResponseProfile responseProfile = new ResponseProfile();
         try{
             Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
@@ -232,8 +234,8 @@ public class MainController {
             responseProfile.setAuth(true);
             responseProfile.setUsername(username);
             responseProfile.setMessage("Welcome Back, " + username);
-        }catch (Exception e){
-            throw new Exception("User Cannot be Found");
+        }catch (MalformedJwtException e){
+            System.out.println(e.getMessage());
         }
         return ResponseEntity.ok(responseProfile);
     }
@@ -298,8 +300,8 @@ public class MainController {
     }
 
     @PutMapping("/profile-details/update")
-    public ResponseEntity<ResponseMessage<Void>> updateProfileDetails(@RequestBody RegistrationInOutDto registrationInOutDto) {
-        ResponseMessage<Void> responseMessage = new ResponseMessage<>();
+    public ResponseEntity<ResponseMessage> updateProfileDetails(@RequestBody RegistrationInOutDto registrationInOutDto) {
+        ResponseMessage responseMessage = new ResponseMessage();
 
         userInformationService.saveUserInformation(registrationInOutDto);
 

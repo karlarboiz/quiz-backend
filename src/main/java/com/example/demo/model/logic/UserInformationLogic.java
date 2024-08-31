@@ -11,4 +11,7 @@ public interface UserInformationLogic {
     public UserInformation matchedLoginCredentials(String email) ;
 
     public List<Object[]> matchedLoginCredentialsUsingUsername(String username) ;
+
+
+    public List<UserInformation> getUserInfoByUsername(String username);
 }

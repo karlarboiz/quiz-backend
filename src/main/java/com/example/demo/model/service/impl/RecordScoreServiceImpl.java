@@ -35,7 +35,8 @@ public class RecordScoreServiceImpl implements RecordScoreService {
 
         int itemIdPk = itemDataQuizInOutDto.getSaveQuizInfoIdPk();
         ItemDataQuiz itemDataQuiz = itemDataQuizLogic.getItemBasedOnQuizIdTagAndQuizUserIdPkAndQuizItemIdPk(quizIdTag,userIdPk,itemIdPk);
-        boolean isCorrect = itemDataQuiz.getCorrectAnswer().equals(itemDataQuizInOutDto.getUserAnswer());
+        boolean isCorrect = itemDataQuiz.getCorrectAnswer().matches(itemDataQuizInOutDto.getUserAnswer());
+
         RecordScore recordScore = new RecordScore();
 
         recordScore.setRecordIdTag(quizIdTag);

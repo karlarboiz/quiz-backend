@@ -62,7 +62,7 @@ public class LoginController {
     public ResponseEntity<ResponseAuthentication> getCredentials(@RequestBody RequestAuthentication requestAuthentication) throws SQLException {
         //get validation results
         ResponseAuthentication responseAuthentication = authenticationService.validateResponseAuthentication(requestAuthentication);
-        System.out.println(responseAuthentication.getResponseAuthErrors());
+        
         if(!responseAuthentication.getResponseAuthErrors().isEmpty()){
             return ResponseEntity.ok(responseAuthentication);
         }else {

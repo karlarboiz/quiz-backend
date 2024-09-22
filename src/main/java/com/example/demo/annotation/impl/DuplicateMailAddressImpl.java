@@ -1,6 +1,7 @@
 package com.example.demo.annotation.impl;
 
 import com.example.demo.annotation.DuplicateMailAddress;
+import com.example.demo.model.dao.entity.UserInformation;
 import com.example.demo.model.logic.UserInformationLogic;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -12,8 +13,8 @@ public class DuplicateMailAddressImpl implements ConstraintValidator<DuplicateMa
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext){
-
-        return true;
+        UserInformation userInformation = userInformationLogic.matchedLoginCredentials(value);
+        return userInformation == null;
     }
 
 }

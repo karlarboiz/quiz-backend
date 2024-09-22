@@ -42,4 +42,6 @@ public class UserInformationLogicImpl implements UserInformationLogic {
     public List<UserInformation> getUserInfoByUsername(String username) {
         return userInformationDao.getUserInfoByUsername(username);
     }
+
+
  }

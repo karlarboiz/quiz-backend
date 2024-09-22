@@ -29,7 +29,6 @@ public class LoggedInUserServiceImpl implements LoggedInUserService {
 
         List<Object[]> userInformation = userInformationLogic.matchedLoginCredentialsUsingUsername(username);
 
-
         userInformationObj.setId((Integer) userInformation.get(0)[0]);
         userInformationObj.setEmail((String) userInformation.get(0)[2]);
 

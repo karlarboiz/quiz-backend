@@ -9,9 +9,10 @@ import com.example.demo.obj.LoginInputsObj;
 import com.example.demo.request.RequestAuthentication;
 import com.example.demo.response.ResponseAuthentication;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -19,7 +20,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 
-import java.sql.SQLException;
 import java.util.*;
 
 
@@ -36,15 +36,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private JwtService jwtService;
 
-    private final Validator validator;
-
-    // Injecting the LocalValidatorFactoryBean using the @Qualifier annotation
-
-    public AuthenticationServiceImpl(@Qualifier("localValidatorFactoryBean") Validator validator) {
-
-        this.validator = validator;
-
-    }
 
     /**
      * validate login request
@@ -52,10 +43,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * */
     @Override
     public ResponseAuthentication validateResponseAuthentication(RequestAuthentication requestAuthentication) {
-
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
 
         ResponseAuthentication responseAuthentication = new ResponseAuthentication();
-
 
         LoginInputsObj loginInputsObj = new LoginInputsObj();
 

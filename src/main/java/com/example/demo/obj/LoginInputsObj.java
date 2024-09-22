@@ -3,10 +3,11 @@ package com.example.demo.obj;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-@AllArgsConstructor
 public class LoginInputsObj {
 
     @Pattern(regexp = "^[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{10,30}$",message = "Not a valid email")

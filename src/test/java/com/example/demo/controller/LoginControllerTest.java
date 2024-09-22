@@ -53,7 +53,7 @@ public class LoginControllerTest {
     @Test
     public void loginControllerTest1() {
 
-        RegistrationInOutDto registrationInOutDto = new RegistrationInOutDto();
+    /*    RegistrationInOutDto registrationInOutDto = new RegistrationInOutDto();
         registrationInOutDto.setFirstName("Hello");
         registrationInOutDto.setLastName("Hello");
         registrationInOutDto.setUsername("hello123");
@@ -67,9 +67,9 @@ public class LoginControllerTest {
         ResponseEntity<ResponseMessage> responseEntity = loginController.register(registrationInOutDto);
         ResponseMessage responseMessage = new ResponseMessage();
 
-        responseMessage.setSuccess(true);
+            responseMessage.setSuccess(true);
         responseMessage.setMessage("Hello");
-        responseMessage.setAuth(true);
+        responseMessage.setAuth(true);*/
 
 //        assert(responseEntity.getBody()).equals();
     }

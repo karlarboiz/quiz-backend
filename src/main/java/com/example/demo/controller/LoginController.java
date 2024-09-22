@@ -35,38 +35,35 @@ public class LoginController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseMessage> register(@RequestBody RegistrationInOutDto userInfo){
+    public ResponseEntity<ResponseAuthentication> register(@RequestBody RegistrationInOutDto userInfo){
         RegistrationInOutDto registrationInOutDto = userInformationService.validateUserRegistration(userInfo);
-
-        ResponseMessage responseMessage = new ResponseMessage();
-
-        if(!registrationInOutDto.isValid()){
-        
-
+        ResponseAuthentication responseAuthentication = new ResponseAuthentication();
+        if(registrationInOutDto.isValid()){
+            responseAuthentication.setValid(false);
+            responseAuthentication.setMessage("Kindly fix the following fields!");
+            responseAuthentication.setResponseAuthErrors(registrationInOutDto.getResponseRegErrors());
         }else {
             // Assuming saveUserInformation() method performs the save operation without returning anything
             SavingDto savingDto = userInformationService.saveUserInformation(userInfo);
 
             if(savingDto.getSaveResult().matches(CommonConstant.RETURN_CD)) {
-                responseMessage.setSuccess(true);
-                responseMessage.setMessage("It worked!");
+                responseAuthentication.setValid(true);
+                responseAuthentication.setMessage("Successfully registered");
             }else {
-                responseMessage.setSuccess(false);
-                responseMessage.setMessage("Something went wrong!");
+                responseAuthentication.setValid(false);
+                responseAuthentication.setMessage("Kindly fix the following fields!");
+                responseAuthentication.setResponseAuthErrors(registrationInOutDto.getResponseRegErrors());
             }
         }
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseAuthentication);
     }
-
-
 
     @PostMapping("/login")
     public ResponseEntity<ResponseAuthentication> getCredentials(@RequestBody RequestAuthentication requestAuthentication) throws SQLException {
         //get validation results
         ResponseAuthentication responseAuthentication = authenticationService.validateResponseAuthentication(requestAuthentication);
-        if(!responseAuthentication){
+        System.out.println(responseAuthentication.getResponseAuthErrors());
+        if(!responseAuthentication.getResponseAuthErrors().isEmpty()){
             return ResponseEntity.ok(responseAuthentication);
         }else {
             ResponseAuthentication responseAuthentication1 = authenticationService.responseAuthentication(requestAuthentication);

@@ -72,6 +72,8 @@ public class UserInformationServiceImpl implements UserInformationService {
 
         List<String> regResponseErrors=  new ArrayList<>();
         for(ConstraintViolation item: violations) {
+
+
             regResponseErrors.add(item.getMessage());
         }
 

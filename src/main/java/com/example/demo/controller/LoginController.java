@@ -37,6 +37,7 @@ public class LoginController {
     @PostMapping("/register")
     public ResponseEntity<ResponseAuthentication> register(@RequestBody RegistrationInOutDto userInfo){
         RegistrationInOutDto registrationInOutDto = userInformationService.validateUserRegistration(userInfo);
+
         ResponseAuthentication responseAuthentication = new ResponseAuthentication();
         if(registrationInOutDto.isValid()){
             responseAuthentication.setValid(false);
@@ -62,11 +63,12 @@ public class LoginController {
     public ResponseEntity<ResponseAuthentication> getCredentials(@RequestBody RequestAuthentication requestAuthentication) throws SQLException {
         //get validation results
         ResponseAuthentication responseAuthentication = authenticationService.validateResponseAuthentication(requestAuthentication);
-        
+
         if(!responseAuthentication.getResponseAuthErrors().isEmpty()){
             return ResponseEntity.ok(responseAuthentication);
         }else {
             ResponseAuthentication responseAuthentication1 = authenticationService.responseAuthentication(requestAuthentication);
+
             return ResponseEntity.ok(responseAuthentication1);
         }
     }

@@ -84,6 +84,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             );
 
             UserInformation userInformation = userInformationLogic.matchedLoginCredentials(requestAuthentication.getEmail());
+
             if(userInformation == null) {
                 responseAuthentication.setValid(false);
                 responseAuthentication.setToken(null);
@@ -94,12 +95,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 responseAuthentication.setToken(jwtToken);
             }
         }catch (InternalAuthenticationServiceException | BadCredentialsException e) {
+
             responseAuthentication.setMessage("Credentials not recognized. Please try again!");
         }
         return responseAuthentication;
 
 
     }
-
-
 }

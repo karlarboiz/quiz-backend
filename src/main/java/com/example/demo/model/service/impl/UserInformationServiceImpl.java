@@ -71,9 +71,8 @@ public class UserInformationServiceImpl implements UserInformationService {
         Set<ConstraintViolation<RegisterInputsObj>> violations = validator.validate(registerInputsObj);
 
         List<String> regResponseErrors=  new ArrayList<>();
+
         for(ConstraintViolation item: violations) {
-
-
             regResponseErrors.add(item.getMessage());
         }
 

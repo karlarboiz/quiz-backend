@@ -12,7 +12,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = DuplicateMailAddressImpl.class)
 public @interface DuplicateMailAddress {
-
     String message() default "Mail Address already exists.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

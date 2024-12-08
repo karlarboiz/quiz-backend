@@ -59,12 +59,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         List<String> errorMsgs = new ArrayList<>();
 
+        List<Map<String, List<String>> >errorlist = new ArrayList<>();
+
+        List<String> emailErrorList = new ArrayList<>();
+
+        List<String> passwordErrorList = new ArrayList<>();
+
+        Map<String,List<String>> collectionError = new HashMap<>();
+
         for(ConstraintViolation item: violations) {
+
+            if(item.getPropertyPath().toString().matches("email")){
+
+                emailErrorList.add(item.getMessage());
+
+            }else {
+                passwordErrorList.add(item.getMessage());
+            }
             errorMsgs.add(item.getMessage());
         }
+        collectionError.put("email",emailErrorList);
+        collectionError.put("password",passwordErrorList);
+
         responseAuthentication.setValid(!errorMsgs.isEmpty());
 
         responseAuthentication.setResponseAuthErrors(errorMsgs);
+
+        responseAuthentication.setErrorlist(collectionError);
         return responseAuthentication;
     }
 

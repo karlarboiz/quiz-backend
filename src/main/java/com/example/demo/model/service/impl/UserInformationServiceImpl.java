@@ -15,6 +15,7 @@ import com.example.demo.model.service.UserInformationService;
 import com.example.demo.obj.RegisterInputsObj;
 import com.example.demo.obj.UserInformationObj;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,9 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserInformationServiceImpl implements UserInformationService {
@@ -70,16 +69,41 @@ public class UserInformationServiceImpl implements UserInformationService {
 
         Set<ConstraintViolation<RegisterInputsObj>> violations = validator.validate(registerInputsObj);
 
-        List<String> regResponseErrors=  new ArrayList<>();
+        List<String> firstNameErrors = new ArrayList<>();
+        List<String> lastNameErrors = new ArrayList<>();
+        List<String> emailAddressErrors = new ArrayList<>();
+        List<String> usernameErrors = new ArrayList<>();
+        List<String> passwordErrors = new ArrayList<>();
+        try{
+            for(ConstraintViolation item: violations) {
+                if(item.getPropertyPath().toString().matches("username")){
+                    usernameErrors.add(item.getMessage());
+                }else if(item.getPropertyPath().toString().matches("email")){
+                    emailAddressErrors.add(item.getMessage());
+                } else if (item.getPropertyPath().toString().matches("password")) {
+                    passwordErrors.add(item.getMessage());
+                }else if (item.getPropertyPath().toString().matches("firstName")){
+                    firstNameErrors.add(item.getMessage());
+                } else {
+                    lastNameErrors.add(item.getMessage());
 
-        for(ConstraintViolation item: violations) {
-            regResponseErrors.add(item.getMessage());
+                }
+
+            }
+        }catch (ConstraintViolationException e){
+            System.out.println(e.getMessage());
+
         }
+        Map<String,List<String>> errorList = new HashMap<>();
+        errorList.put("firstName",firstNameErrors);
+        errorList.put("lastName",lastNameErrors);
+        errorList.put("username",usernameErrors);
+        errorList.put("email",emailAddressErrors);
+        errorList.put("password",passwordErrors);
 
-        registrationValidation.setValid(!regResponseErrors.isEmpty());
+        registrationValidation.setValid(violations.isEmpty());
 
-        registrationValidation.setResponseRegErrors(regResponseErrors);
-
+        registrationValidation.setErrorlist(errorList);
         return  registrationValidation;
     }
 
@@ -89,6 +113,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         UserInformation userInformation = new UserInformation();
         UserInformationAccount userInformationAccount = new UserInformationAccount();
         Timestamp date = new Timestamp(System.currentTimeMillis());
+
 
         if(!userInformationEntity.isUpdate()) {
             userInformation.setRegDate(date);

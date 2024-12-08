@@ -39,9 +39,12 @@ public class LoginController {
         RegistrationInOutDto registrationInOutDto = userInformationService.validateUserRegistration(userInfo);
 
         ResponseAuthentication responseAuthentication = new ResponseAuthentication();
-        if(registrationInOutDto.isValid()){
+
+        System.out.println(registrationInOutDto);
+        if(!registrationInOutDto.isValid()){
             responseAuthentication.setValid(false);
-            responseAuthentication.setMessage("Kindly fix the following fields!");
+
+            responseAuthentication.setErrorlist(registrationInOutDto.getErrorlist());
             responseAuthentication.setResponseAuthErrors(registrationInOutDto.getResponseRegErrors());
         }else {
             // Assuming saveUserInformation() method performs the save operation without returning anything
@@ -52,19 +55,24 @@ public class LoginController {
                 responseAuthentication.setMessage("Successfully registered");
             }else {
                 responseAuthentication.setValid(false);
-                responseAuthentication.setMessage("Kindly fix the following fields!");
-                responseAuthentication.setResponseAuthErrors(registrationInOutDto.getResponseRegErrors());
+                responseAuthentication.setMessage(savingDto.getError());
+
             }
         }
+
+
         return ResponseEntity.status(HttpStatus.CREATED).body(responseAuthentication);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseAuthentication> getCredentials(@RequestBody RequestAuthentication requestAuthentication) throws SQLException {
+    public ResponseEntity<ResponseAuthentication>
+    getCredentials(@RequestBody RequestAuthentication requestAuthentication)
+            throws SQLException {
         //get validation results
         ResponseAuthentication responseAuthentication = authenticationService.validateResponseAuthentication(requestAuthentication);
 
         if(!responseAuthentication.getResponseAuthErrors().isEmpty()){
+
             return ResponseEntity.ok(responseAuthentication);
         }else {
             ResponseAuthentication responseAuthentication1 = authenticationService.responseAuthentication(requestAuthentication);
@@ -72,9 +80,5 @@ public class LoginController {
             return ResponseEntity.ok(responseAuthentication1);
         }
     }
-
-
-
-
 
 }

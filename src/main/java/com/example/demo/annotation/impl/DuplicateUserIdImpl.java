@@ -20,9 +20,7 @@ public class DuplicateUserIdImpl implements ConstraintValidator<DuplicateUserId,
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext){
         List<UserInformation> userInformationList = userInformationLogic.getUserInfoByUsername(value);
 
-        System.out.println("Hello there");
-        
-        return userInformationList.size() > 0;
+        return userInformationList.isEmpty();
     }
 
 }

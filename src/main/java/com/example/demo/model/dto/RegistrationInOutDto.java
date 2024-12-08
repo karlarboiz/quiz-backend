@@ -4,6 +4,7 @@ package com.example.demo.model.dto;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class RegistrationInOutDto {
@@ -25,6 +26,8 @@ public class RegistrationInOutDto {
     private List<String> responseRegErrors;
 
     private boolean isSuccess;
+
+    private Map<String,List<String>> errorlist;
 
 
 }

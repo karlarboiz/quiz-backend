@@ -1,9 +1,17 @@
 package com.example.demo.util;
 
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.security.NoSuchAlgorithmException;
+
 public class CipherUtil {
-//    private static final String ALGORITHM = ApplicationPropertiesRead.read("cipher.algorithm");
-//    private static final String TEMPLATE_SECRET = ApplicationPropertiesRead.read("cipher.key.template");
-//    private static final String FORM_SECRET = ApplicationPropertiesRead.read("cipher.key.form");
-    public static final short TEMPLATE_CIPHER = 0;
+
+
+    public static SecretKey generateKey(int n) throws NoSuchAlgorithmException {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(n);
+        SecretKey key = keyGenerator.generateKey();
+        return key;
+    }   
 }

@@ -6,11 +6,18 @@ import com.example.demo.model.dto.UserInformationInOutDto;
 import com.example.demo.model.logic.SaveGameInfoLogic;
 import com.example.demo.model.service.SaveGameInfoService;
 import com.example.demo.obj.SaveGameInfoObj;
+import com.example.demo.util.ExtendUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -122,7 +129,7 @@ public class SaveGameInfoServiceImpl implements SaveGameInfoService {
     }
 
     @Override
-    public SaveGameInfoInOutDto getAllNotCompletedQuizzes(SaveGameInfoInOutDto inOutDto) {
+    public SaveGameInfoInOutDto getAllNotCompletedQuizzes(SaveGameInfoInOutDto inOutDto) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
 
         SaveGameInfoInOutDto outDto = new SaveGameInfoInOutDto();
         List<SaveGameInfoObj> saveGameInfoObjs = new ArrayList<>();
@@ -131,8 +138,9 @@ public class SaveGameInfoServiceImpl implements SaveGameInfoService {
 
         for(Object[] saveGameInfo : notCompletedQuizzes){
             SaveGameInfoObj saveGameInfoObj = new SaveGameInfoObj();
-
+            String encryptedIdPk = ExtendUtil.encryptedFunction((Integer) saveGameInfo[0]);
             saveGameInfoObj.setIdPk((Integer) saveGameInfo[0]);
+            saveGameInfoObj.setEncryptedIdPk(encryptedIdPk);
             saveGameInfoObj.setDate((String) saveGameInfo[1]);
             saveGameInfoObj.setQuizUUID((String) saveGameInfo[2]);
             saveGameInfoObj.setIncompleteQuizzes((Long) saveGameInfo[3]);

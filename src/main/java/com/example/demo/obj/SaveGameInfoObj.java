@@ -10,6 +10,10 @@ public class SaveGameInfoObj {
 
     private int idPk;
 
+    private String encryptedIdPk;
+
+    private String decryptedIdPk;
+
     private String quizUUID;
 
     private int userIdPk;

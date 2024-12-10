@@ -14,6 +14,7 @@ import com.example.demo.model.logic.UserInformationLogic;
 import com.example.demo.model.service.UserInformationService;
 import com.example.demo.obj.RegisterInputsObj;
 import com.example.demo.obj.UserInformationObj;
+import com.example.demo.util.CipherUtil;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -22,6 +23,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -207,4 +216,4 @@ public class UserInformationServiceImpl implements UserInformationService {
 
 
 }
- 
+

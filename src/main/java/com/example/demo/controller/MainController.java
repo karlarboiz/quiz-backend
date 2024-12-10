@@ -19,6 +19,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -273,8 +279,9 @@ public class MainController {
 
         return ResponseEntity.ok(itemDataQuizObjList);
     }
+
     @GetMapping("/game-history/incomplete-quizzes")
-    public ResponseEntity<List<SaveGameInfoObj>> getIncompleteQuizByUser(){
+    public ResponseEntity<List<SaveGameInfoObj>> getIncompleteQuizByUser() throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
 
         SaveGameInfoInOutDto inDto = new SaveGameInfoInOutDto();
 

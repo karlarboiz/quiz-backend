@@ -20,6 +20,8 @@ public class UserInformationObj {
 
     private int age;
 
+    private String displayPicture;
+
     private String username;
 
     private Long completedQuizzes;

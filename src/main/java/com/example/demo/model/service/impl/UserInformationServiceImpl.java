@@ -144,12 +144,12 @@ public class UserInformationServiceImpl implements UserInformationService {
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
-            String fileName = userInformationEntity.getUsername() + ".jpg";
+            String fileName = userInformationEntity.getUsername() +"-profile"+ ".jpg";
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(userInformationEntity.getImage().getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
             String picture = env.getProperty("file.upload-dir") + SeparatorUtil.separateDirectorSign()
-                    +fileName+SeparatorUtil.separateDirectorSign()+userInformationEntity.getUsername();
+                    +fileName;
             userInformationAccount.setUserIdPk(userInformation.getIdPk());
             userInformationAccount.setFirstName(userInformationEntity.getFirstName());
             userInformationAccount.setLastName(userInformationEntity.getLastName());
@@ -196,11 +196,13 @@ public class UserInformationServiceImpl implements UserInformationService {
         if(userInformation.isEmpty()) {
             return userInformationInOutDto;
         }
+
+        System.out.println((String)userInformation.get(0)[5]);
         userInformationObj.setUsername((String) userInformation.get(0)[1]);
         userInformationObj.setEmail((String) userInformation.get(0)[2]);
         userInformationObj.setFirstName((String) userInformation.get(0)[3]);
         userInformationObj.setLastName((String) userInformation.get(0)[4]);
-
+        userInformationObj.setDisplayPicture((String) userInformation.get(0)[5]);
         userInformationInOutDto.setUserInformationObj(userInformationObj);
 
         return userInformationInOutDto;

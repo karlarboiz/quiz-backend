@@ -20,7 +20,8 @@ public interface UserInformationDao extends JpaRepository<UserInformation,Intege
                     " and f.deleteFlg = false";
 
     final String FIND_USER_BY_USERNAME =
-            "SELECT e.idPk, e.username, e.email, f.firstName,f.lastName " +
+            "SELECT e.idPk, e.username, e.email, f.firstName,f.lastName, " +
+                    "f.displayPicture " +
                     " from UserInformation e " +
                     " inner join UserInformationAccount f " +
                     " on e.idPk = f.userIdPk" +

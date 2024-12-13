@@ -12,13 +12,17 @@ import com.example.demo.request.RequestAuthentication;
 import com.example.demo.response.ResponseAuthentication;
 import com.example.demo.response.ResponseMessage;
 import jakarta.validation.Valid;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -35,33 +39,41 @@ public class LoginController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseAuthentication> register(@RequestBody RegistrationInOutDto userInfo){
+    public ResponseEntity<ResponseAuthentication>
+    register (
+            @RequestPart(value = "image",required = false) MultipartFile file,
+            @RequestPart(value = "userinfo") RegistrationInOutDto userInfo)
+    throws  IOException{
+
         RegistrationInOutDto registrationInOutDto = userInformationService.validateUserRegistration(userInfo);
 
         ResponseAuthentication responseAuthentication = new ResponseAuthentication();
 
-        System.out.println(registrationInOutDto);
-        if(!registrationInOutDto.isValid()){
-            responseAuthentication.setValid(false);
-
-            responseAuthentication.setErrorlist(registrationInOutDto.getErrorlist());
-            responseAuthentication.setResponseAuthErrors(registrationInOutDto.getResponseRegErrors());
-        }else {
-            // Assuming saveUserInformation() method performs the save operation without returning anything
-            SavingDto savingDto = userInformationService.saveUserInformation(userInfo);
-
-            if(savingDto.getSaveResult().matches(CommonConstant.RETURN_CD)) {
-                responseAuthentication.setValid(true);
-                responseAuthentication.setMessage("Successfully registered");
-            }else {
+        try{
+            if(!registrationInOutDto.isValid()){
                 responseAuthentication.setValid(false);
-                responseAuthentication.setMessage(savingDto.getError());
+                responseAuthentication.setErrorlist(registrationInOutDto.getErrorlist());
+                responseAuthentication.setResponseAuthErrors(registrationInOutDto.getResponseRegErrors());
+            }else {
+                //set image
+                userInfo.setImage(file);
+                // Assuming saveUserInformation() method performs the save operation without returning anything
+                SavingDto savingDto = userInformationService.saveUserInformation(userInfo);
 
+                if(savingDto.getSaveResult().matches(CommonConstant.RETURN_CD)) {
+                    responseAuthentication.setValid(true);
+                    responseAuthentication.setMessage("Successfully registered");
+                }else {
+                    responseAuthentication.setValid(false);
+                    responseAuthentication.setMessage(savingDto.getError());
+
+                }
             }
+        }catch (NullPointerException | IllegalArgumentException e){
+            System.out.println(e.getMessage());
         }
 
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseAuthentication);
+        return ResponseEntity.status(HttpStatus.OK).body(responseAuthentication);
     }
 
     @PostMapping("/login")

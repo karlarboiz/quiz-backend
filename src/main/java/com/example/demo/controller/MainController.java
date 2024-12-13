@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -54,6 +57,7 @@ public class MainController {
 
     @Autowired
     private HttpServletRequest request;
+
     @PostMapping("/start")
     public ResponseEntity<ResponseMessage>
     saveGameInfo(@RequestBody List<RequestListOfQuizData> requestListOfQuizData) {
@@ -307,7 +311,7 @@ public class MainController {
     }
 
     @PutMapping("/profile-details/update")
-    public ResponseEntity<ResponseMessage> updateProfileDetails(@RequestBody RegistrationInOutDto registrationInOutDto) {
+    public ResponseEntity<ResponseMessage> updateProfileDetails(@RequestBody RegistrationInOutDto registrationInOutDto) throws IOException {
         ResponseMessage responseMessage = new ResponseMessage();
 
         userInformationService.saveUserInformation(registrationInOutDto);
@@ -317,6 +321,7 @@ public class MainController {
 
         return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
     }
+
 
 
 }

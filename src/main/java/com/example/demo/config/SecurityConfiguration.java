@@ -48,7 +48,7 @@ public class SecurityConfiguration {
                                 ).sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/something/**").permitAll()
+                                .requestMatchers("/real-time/**").permitAll()
                                 .requestMatchers("/quiz/api/**").permitAll()
                                 .requestMatchers("/main/user/**").authenticated()
                 )

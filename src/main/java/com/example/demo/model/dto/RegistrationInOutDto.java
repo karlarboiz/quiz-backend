@@ -2,6 +2,7 @@ package com.example.demo.model.dto;
 
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -29,5 +30,5 @@ public class RegistrationInOutDto {
 
     private Map<String,List<String>> errorlist;
 
-
+    private MultipartFile image;
 }

@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             @NonNull  HttpServletRequest request,
             @NonNull  HttpServletResponse response,
-            @NonNull  FilterChain filterChain) throws ServletException, IOException {
+            @NonNull  FilterChain filterChain) throws ServletException, IOException,FileUploadException{
 
         try {
             final String authHeader = request.getHeader("Authorization");
@@ -83,5 +84,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request,response);
+
     }
 }

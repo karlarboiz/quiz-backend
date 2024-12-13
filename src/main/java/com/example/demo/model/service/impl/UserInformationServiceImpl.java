@@ -15,22 +15,21 @@ import com.example.demo.model.service.UserInformationService;
 import com.example.demo.obj.RegisterInputsObj;
 import com.example.demo.obj.UserInformationObj;
 import com.example.demo.util.CipherUtil;
+import com.example.demo.util.SeparatorUtil;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -48,6 +47,9 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private Environment env;
+
     private final Validator validator;
 
     // Injecting the LocalValidatorFactoryBean using the @Qualifier annotation
@@ -61,7 +63,7 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public RegistrationInOutDto validateUserRegistration(RegistrationInOutDto registrationInOutDto) {
-
+        System.out.println(env.getProperty("file.upload-dir"));
         RegistrationInOutDto registrationValidation = new RegistrationInOutDto();
 
         RegisterInputsObj registerInputsObj = new RegisterInputsObj();
@@ -83,6 +85,8 @@ public class UserInformationServiceImpl implements UserInformationService {
         List<String> emailAddressErrors = new ArrayList<>();
         List<String> usernameErrors = new ArrayList<>();
         List<String> passwordErrors = new ArrayList<>();
+
+
         try{
             for(ConstraintViolation item: violations) {
                 if(item.getPropertyPath().toString().matches("username")){
@@ -117,12 +121,12 @@ public class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
-    public SavingDto saveUserInformation(RegistrationInOutDto userInformationEntity) {
+    public SavingDto saveUserInformation(RegistrationInOutDto userInformationEntity)
+            throws IOException {
         SavingDto savingDto = new SavingDto();
         UserInformation userInformation = new UserInformation();
         UserInformationAccount userInformationAccount = new UserInformationAccount();
         Timestamp date = new Timestamp(System.currentTimeMillis());
-
 
         if(!userInformationEntity.isUpdate()) {
             userInformation.setRegDate(date);
@@ -136,10 +140,20 @@ public class UserInformationServiceImpl implements UserInformationService {
             userInformation.setDeleteFlg(false);
             userInformationLogic.saveUserInformation(userInformation);
 
+            Path uploadPath = Paths.get(env.getProperty("file.upload-dir"));
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            String fileName = userInformationEntity.getUsername() + ".jpg";
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(userInformationEntity.getImage().getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            String picture = env.getProperty("file.upload-dir") + SeparatorUtil.separateDirectorSign()
+                    +fileName+SeparatorUtil.separateDirectorSign()+userInformationEntity.getUsername();
             userInformationAccount.setUserIdPk(userInformation.getIdPk());
             userInformationAccount.setFirstName(userInformationEntity.getFirstName());
             userInformationAccount.setLastName(userInformationEntity.getLastName());
-            userInformationAccount.setDisplayPicture("thisisdisplaypicture");
+            userInformationAccount.setDisplayPicture(picture);
             userInformationAccount.setRegDate(date);
             userInformationAccount.setRegId(userInformationEntity.getUsername());
             userInformationAccount.setUpdateId(userInformationEntity.getUsername());

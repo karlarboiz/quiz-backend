@@ -303,7 +303,7 @@ public class MainController {
     }
 
     @GetMapping("/profile-details")
-    public ResponseEntity<UserInformationObj> getProfileDetais() {
+    public ResponseEntity<UserInformationObj> getProfileDetais() throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
       UserInformationInOutDto userInformationInOutDto = new UserInformationInOutDto();
 
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();

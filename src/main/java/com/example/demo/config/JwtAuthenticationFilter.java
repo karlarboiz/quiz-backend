@@ -18,7 +18,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 
 @Component
@@ -79,7 +86,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
 
-        }catch (MalformedJwtException e) {
+        }catch (MalformedJwtException | InvalidAlgorithmParameterException | NoSuchPaddingException |
+                IllegalBlockSizeException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException e) {
             System.out.println(e.getMessage());
         }
 

@@ -15,6 +15,7 @@ import com.example.demo.model.service.UserInformationService;
 import com.example.demo.obj.RegisterInputsObj;
 import com.example.demo.obj.UserInformationObj;
 import com.example.demo.util.CipherUtil;
+import com.example.demo.util.ExtendUtil;
 import com.example.demo.util.SeparatorUtil;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -25,11 +26,17 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -187,7 +194,7 @@ public class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
-    public UserInformationInOutDto getUserDetailsUsingUsername(String username) {
+    public UserInformationInOutDto getUserDetailsUsingUsername(String username) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
 
         UserInformationInOutDto userInformationInOutDto = new UserInformationInOutDto();
         UserInformationObj userInformationObj = new UserInformationObj();
@@ -197,7 +204,7 @@ public class UserInformationServiceImpl implements UserInformationService {
             return userInformationInOutDto;
         }
 
-        System.out.println((String)userInformation.get(0)[5]);
+        userInformationObj.setEncryptedIdPk(ExtendUtil.encryptedFunction((Integer) userInformation.get(0)[0]));
         userInformationObj.setUsername((String) userInformation.get(0)[1]);
         userInformationObj.setEmail((String) userInformation.get(0)[2]);
         userInformationObj.setFirstName((String) userInformation.get(0)[3]);

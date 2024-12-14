@@ -10,6 +10,8 @@ import java.time.LocalDate;
 public class UserInformationObj {
     private int id;
 
+    private String encryptedIdPk;
+
     private String firstName;
 
     private String lastName;

@@ -33,6 +33,7 @@ import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -241,19 +242,23 @@ public class MainController {
 
 
     @GetMapping("/profile")
-    public ResponseEntity<ResponseProfile> getProfile() {
+    public ResponseEntity<ResponseProfile> getProfile() throws MalformedJwtException, SignatureException {
         ResponseProfile responseProfile = new ResponseProfile();
-        try{
-            Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication.getName();
-            responseProfile.setAuth(true);
-            responseProfile.setUsername(username);
-            responseProfile.setMessage("Welcome Back, " + username);
-        }catch (MalformedJwtException e){
-            System.out.println(e.getMessage());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            responseProfile.setAuth(false);
+            responseProfile.setMessage("User is not authenticated.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseProfile);
         }
+
+        String username = authentication.getName();
+        responseProfile.setAuth(true);
+        responseProfile.setUsername(username);
+        responseProfile.setMessage("Welcome Back, " + username);
         return ResponseEntity.ok(responseProfile);
     }
+
 
     @GetMapping("/game-history")
     public ResponseEntity<List<SaveGameInfoObj>> getHistory() {

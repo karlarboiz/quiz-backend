@@ -9,6 +9,7 @@ import com.example.demo.model.service.AuthenticationService;
 import com.example.demo.model.service.UserInformationService;
 import com.example.demo.obj.UserInformationObj;
 import com.example.demo.request.RequestAuthentication;
+import com.example.demo.request.RequestPasswordReset;
 import com.example.demo.response.ResponseAuthentication;
 import com.example.demo.response.ResponseMessage;
 import jakarta.validation.Valid;
@@ -94,7 +95,7 @@ public class LoginController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPasswordHandler(){
+    public ResponseEntity<String> forgotPasswordHandler(@RequestBody RequestPasswordReset requestPasswordReset){
 
         return ResponseEntity.ok("hello there");
     }

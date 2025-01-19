@@ -93,4 +93,10 @@ public class LoginController {
         }
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPasswordHandler(){
+
+        return ResponseEntity.ok("hello there");
+    }
+
 }

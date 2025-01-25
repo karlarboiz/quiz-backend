@@ -14,7 +14,7 @@ import com.example.demo.model.logic.UserInformationLogic;
 import com.example.demo.model.service.UserInformationService;
 import com.example.demo.obj.RegisterInputsObj;
 import com.example.demo.obj.UserInformationObj;
-import com.example.demo.util.CipherUtil;
+
 import com.example.demo.util.ExtendUtil;
 import com.example.demo.util.SeparatorUtil;
 import jakarta.validation.ConstraintViolation;
@@ -23,6 +23,7 @@ import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +57,9 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     private final Validator validator;
 

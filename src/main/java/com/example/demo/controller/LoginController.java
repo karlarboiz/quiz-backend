@@ -7,9 +7,12 @@ import com.example.demo.model.dto.SavingDto;
 import com.example.demo.model.dto.UserInformationInOutDto;
 import com.example.demo.model.service.AuthenticationService;
 import com.example.demo.model.service.UserInformationService;
+import com.example.demo.model.service.impl.ForgotPasswordServiceImpl;
+import com.example.demo.obj.PasswordResetObj;
 import com.example.demo.obj.UserInformationObj;
 import com.example.demo.request.RequestAuthentication;
 import com.example.demo.request.RequestPasswordReset;
+import com.example.demo.response.ForgotPasswordResponse;
 import com.example.demo.response.ResponseAuthentication;
 import com.example.demo.response.ResponseMessage;
 import jakarta.validation.Valid;
@@ -38,6 +41,9 @@ public class LoginController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+    @Autowired
+    private ForgotPasswordServiceImpl forgotPasswordService;
 
     @PostMapping("/register")
     public ResponseEntity<ResponseAuthentication>
@@ -95,9 +101,17 @@ public class LoginController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPasswordHandler(@RequestBody RequestPasswordReset requestPasswordReset){
+    public ResponseEntity<ForgotPasswordResponse> forgotPasswordHandler(@RequestBody RequestPasswordReset requestPasswordReset){
+        PasswordResetObj passwordResetObj = new PasswordResetObj();
 
-        return ResponseEntity.ok("hello there");
+
+        passwordResetObj.setEmail(requestPasswordReset.getEmail());
+
+        forgotPasswordService.sendForgotPasswordEmail(passwordResetObj);
+
+        ForgotPasswordResponse forgotPasswordResponse = new ForgotPasswordResponse();
+
+        return ResponseEntity.ok(forgotPasswordResponse);
     }
 
 }

@@ -1,11 +1,11 @@
 package com.example.demo.obj;
 
 import com.example.demo.annotation.NonExistentCredentials;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 import org.hibernate.validator.constraints.Length;
 
 @Data

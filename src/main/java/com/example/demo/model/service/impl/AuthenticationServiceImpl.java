@@ -67,8 +67,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         for(ConstraintViolation item: violations) {
 
-            System.out.println(item.getMessage());
-
             if(item.getPropertyPath().toString().matches("email")){
 
                 emailErrorList.add(item.getMessage());

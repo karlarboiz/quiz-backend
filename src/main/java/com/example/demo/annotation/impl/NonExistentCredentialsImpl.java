@@ -12,21 +12,23 @@ public class NonExistentCredentialsImpl implements ConstraintValidator<NonExiste
     @Autowired
     private UserInformationLogicImpl userInformationLogic;
 
+
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext){
-        boolean result = true;
+    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
+
 
         try {
+            if(value == null || value.isEmpty()) {
+                return true;
+            }
             UserInformation userInformation = userInformationLogic.matchedLoginCredentials(value);
 
             System.out.println(userInformation);
-            result = userInformation == null;
-        } catch (NullPointerException e){
-            System.out.println(e.getMessage());
-            result = false;
+            return userInformation == null;
+        }catch (NullPointerException e){
+            System.out.print(e.getMessage());
         }
 
-        return result;
-
+        return true;
     }
 }

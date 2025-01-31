@@ -74,7 +74,7 @@ public class UserInformationServiceImpl implements UserInformationService {
 
     @Override
     public RegistrationInOutDto validateUserRegistration(RegistrationInOutDto registrationInOutDto) {
-        System.out.println(env.getProperty("file.upload-dir"));
+
         RegistrationInOutDto registrationValidation = new RegistrationInOutDto();
 
         RegisterInputsObj registerInputsObj = new RegisterInputsObj();

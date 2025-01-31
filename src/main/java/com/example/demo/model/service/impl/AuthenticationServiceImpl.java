@@ -59,8 +59,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         List<String> errorMsgs = new ArrayList<>();
 
-        List<Map<String, List<String>> >errorlist = new ArrayList<>();
-
         List<String> emailErrorList = new ArrayList<>();
 
         List<String> passwordErrorList = new ArrayList<>();
@@ -68,6 +66,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Map<String,List<String>> collectionError = new HashMap<>();
 
         for(ConstraintViolation item: violations) {
+
+            System.out.println(item.getMessage());
 
             if(item.getPropertyPath().toString().matches("email")){
 

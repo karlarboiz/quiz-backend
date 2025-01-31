@@ -34,6 +34,7 @@ public interface UserInformationDao extends JpaRepository<UserInformation,Intege
                     " where e.username = :username " +
                     " and e.deleteFlg = false";
 
+
     @Query(value = FIND_USER_BY_EMAIL)
     public UserInformation matchedLoginCredentials(@Param("emailParam") String email) throws DataAccessException;
 

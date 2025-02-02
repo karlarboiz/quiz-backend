@@ -1,0 +1,10 @@
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: n1ch0l@s_B14
+      MYSQL_DATABASE: newdb
+  app:
+    image: my-app
+    depends_on:
+      - mysql

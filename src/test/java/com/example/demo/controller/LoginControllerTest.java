@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -51,26 +52,7 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void loginControllerTest1() {
+    public void loginControllerTest1() throws IOException {
 
-    /*    RegistrationInOutDto registrationInOutDto = new RegistrationInOutDto();
-        registrationInOutDto.setFirstName("Hello");
-        registrationInOutDto.setLastName("Hello");
-        registrationInOutDto.setUsername("hello123");
-        registrationInOutDto.setUpdate(false);
-        registrationInOutDto.setEmail("testingser123@mail.com");
-        registrationInOutDto.setPassword("kwankwankwan1234");
-        SavingDto savingDto = new SavingDto();
-        savingDto.setSaveResult(CommonConstant.RETURN_CD);
-        when(userInformationService.saveUserInformation(registrationInOutDto)).thenReturn(savingDto);
-
-        ResponseEntity<ResponseMessage> responseEntity = loginController.register(registrationInOutDto);
-        ResponseMessage responseMessage = new ResponseMessage();
-
-            responseMessage.setSuccess(true);
-        responseMessage.setMessage("Hello");
-        responseMessage.setAuth(true);*/
-
-//        assert(responseEntity.getBody()).equals();
     }
 }

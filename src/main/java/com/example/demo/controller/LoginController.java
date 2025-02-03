@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -49,12 +50,12 @@ public class LoginController {
     public ResponseEntity<ResponseAuthentication>
     register (
             @RequestPart(value = "image",required = false) MultipartFile file,
-            @RequestPart(value = "userinfo") RegistrationInOutDto userInfo)
-    throws  IOException{
+            @RequestPart(value = "userinfo") RegistrationInOutDto userInfo) {
 
         RegistrationInOutDto registrationInOutDto = userInformationService.validateUserRegistration(userInfo);
 
         ResponseAuthentication responseAuthentication = new ResponseAuthentication();
+
 
         try{
             if(!registrationInOutDto.isValid()){
@@ -76,8 +77,10 @@ public class LoginController {
 
                 }
             }
-        }catch (NullPointerException | IllegalArgumentException e){
+        }catch (NullPointerException | IllegalArgumentException | MaxUploadSizeExceededException e){
             System.out.println(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(responseAuthentication);

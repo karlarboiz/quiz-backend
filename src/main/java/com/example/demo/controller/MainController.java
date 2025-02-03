@@ -225,7 +225,7 @@ public class MainController {
 
 
     @GetMapping("/profile")
-    public ResponseEntity<ResponseProfile> getProfile() throws MalformedJwtException, SignatureException {
+    public ResponseEntity<ResponseProfile> getProfile() throws MalformedJwtException, SignatureException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         ResponseProfile responseProfile = new ResponseProfile();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -235,11 +235,29 @@ public class MainController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseProfile);
         }
 
+
+        UserInformationInOutDto userInformationInOutDto1 = userInformationService.getUserDetailsUsingUsername(authentication.getName());
+
+        UserInformationObj userInformationObj = userInformationInOutDto1.getUserInformationObj();
         String username = authentication.getName();
+        responseProfile.setEncryptedIdPk(userInformationObj.getEncryptedIdPk());
         responseProfile.setAuth(true);
         responseProfile.setUsername(username);
         responseProfile.setMessage("Welcome Back, " + username);
         return ResponseEntity.ok(responseProfile);
+    }
+
+    @GetMapping("/profile-details")
+    public ResponseEntity<UserInformationObj> getProfileDetais() throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        UserInformationInOutDto userInformationInOutDto = new UserInformationInOutDto();
+
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+
+        UserInformationInOutDto userInformationInOutDto1 = userInformationService.getUserDetailsUsingUsername(authentication.getName());
+
+        UserInformationObj userInformationObj = userInformationInOutDto1.getUserInformationObj();
+
+        return ResponseEntity.ok(userInformationObj);
     }
 
 
@@ -290,18 +308,7 @@ public class MainController {
         return ResponseEntity.ok(saveGameInfoObjList);
     }
 
-    @GetMapping("/profile-details")
-    public ResponseEntity<UserInformationObj> getProfileDetais() throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-      UserInformationInOutDto userInformationInOutDto = new UserInformationInOutDto();
 
-        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
-
-        UserInformationInOutDto userInformationInOutDto1 = userInformationService.getUserDetailsUsingUsername(authentication.getName());
-
-        UserInformationObj userInformationObj = userInformationInOutDto1.getUserInformationObj();
-
-      return ResponseEntity.ok(userInformationObj);
-    }
 
     @PutMapping("/profile-details/update")
     public ResponseEntity<ResponseMessage> updateProfileDetails(@RequestBody RegistrationInOutDto registrationInOutDto) throws IOException {

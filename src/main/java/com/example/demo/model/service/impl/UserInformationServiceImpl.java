@@ -2,6 +2,7 @@ package com.example.demo.model.service.impl;
 
 
 import com.example.demo.common.CommonConstant;
+import com.example.demo.exception.FolderNotFoundException;
 import com.example.demo.model.dao.entity.Role;
 import com.example.demo.model.dao.entity.UserInformation;
 import com.example.demo.model.dao.entity.UserInformationAccount;
@@ -31,10 +32,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -150,11 +148,15 @@ public class UserInformationServiceImpl implements UserInformationService {
             userInformation.setUpdateDate(date);
             userInformation.setDeleteFlg(false);
             userInformationLogic.saveUserInformation(userInformation);
-
-            Path uploadPath = Paths.get(env.getProperty("file.upload-dir"));
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+            Path uploadPath;
+           try {
+               uploadPath = Paths.get(env.getProperty("file.upload-dir"));
+               if (!Files.exists(uploadPath)) {
+                   Files.createDirectories(uploadPath);
+               }
+           }catch (FileSystemException e){
+               throw new FolderNotFoundException(e.getMessage());
+           }
             String fileName = userInformationEntity.getUsername() +"-profile"+ ".jpg";
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(userInformationEntity.getImage().getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);

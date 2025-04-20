@@ -1,37 +1,26 @@
 package com.example.demo.controller;
 
 import com.example.demo.common.CommonConstant;
-import com.example.demo.model.dto.ErrorBody;
 import com.example.demo.model.dto.RegistrationInOutDto;
 import com.example.demo.model.dto.SavingDto;
-import com.example.demo.model.dto.UserInformationInOutDto;
 import com.example.demo.model.service.AuthenticationService;
 import com.example.demo.model.service.UserInformationService;
 import com.example.demo.model.service.impl.ForgotPasswordServiceImpl;
 import com.example.demo.obj.PasswordResetObj;
-import com.example.demo.obj.UserInformationObj;
 import com.example.demo.request.RequestAuthentication;
 import com.example.demo.request.RequestPasswordReset;
 import com.example.demo.response.ForgotPasswordResponse;
 import com.example.demo.response.ResponseAuthentication;
-import com.example.demo.response.ResponseMessage;
-import jakarta.validation.Valid;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/quiz/api")
@@ -45,6 +34,10 @@ public class LoginController {
 
     @Autowired
     private ForgotPasswordServiceImpl forgotPasswordService;
+
+
+    @Autowired
+    private Environment env;
 
     @PostMapping("/register")
     public ResponseEntity<ResponseAuthentication>
@@ -83,6 +76,7 @@ public class LoginController {
             throw new RuntimeException(e);
         }
 
+
         return ResponseEntity.status(HttpStatus.OK).body(responseAuthentication);
     }
 
@@ -93,6 +87,7 @@ public class LoginController {
         //get validation results
         ResponseAuthentication responseAuthentication = authenticationService.validateResponseAuthentication(requestAuthentication);
 
+
         if(!responseAuthentication.getResponseAuthErrors().isEmpty()){
 
             return ResponseEntity.ok(responseAuthentication);
@@ -101,6 +96,8 @@ public class LoginController {
 
             return ResponseEntity.ok(responseAuthentication1);
         }
+
+
     }
 
     @PostMapping("/forgot-password")

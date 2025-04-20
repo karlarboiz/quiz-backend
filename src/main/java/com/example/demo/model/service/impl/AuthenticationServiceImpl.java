@@ -1,5 +1,6 @@
 package com.example.demo.model.service.impl;
 
+import com.example.demo.common.MessageConstant;
 import com.example.demo.config.JwtService;
 import com.example.demo.model.dao.entity.UserInformation;
 import com.example.demo.model.logic.UserInformationLogic;
@@ -13,6 +14,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -115,7 +117,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
         }catch (InternalAuthenticationServiceException | BadCredentialsException e) {
 
-            responseAuthentication.setMessage("Credentials not recognized. Please try again!");
+            responseAuthentication.setMessage(MessageConstant.FAILED_AUTHENTICATION);
         }
         return responseAuthentication;
 

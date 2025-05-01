@@ -57,8 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if(authHeader == null ||
                     !authHeader.startsWith("Bearer")){
-
-                throw new MalformedJwtException("Something is wrong");
+                return;
             }
 
             jwt = authHeader.substring(7);
